@@ -1,4 +1,13 @@
-function (formula, family, beta.vect, offset, weights, data) {
+#' @title
+#' glmREMADS
+#'
+#' @description
+#' TODO
+#'
+#' @export
+#'
+
+glmREMADS <- function (formula, family, beta.vect, offset, weights, data) {
 
  
 # Get the value of the 'data' parameter provided as character on the client side
