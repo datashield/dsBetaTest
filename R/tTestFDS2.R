@@ -13,7 +13,6 @@
 #' the data to be analysed under the specified model same 
 #' @author Burton PR;Gaye,A;Laflamme,P
 #' @export
-
 tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   
   # Get the value of the 'data' parameter provided as character on the client side
@@ -22,7 +21,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   if(is.null(data)){
     dataTable <- NULL 
   }else{
-    dataTable <- eval(parse(text=data))
+    dataTable <- eval(parse(text=data), envir = parent.frame())
   }
   
   
@@ -52,7 +51,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   for(i in 1:length(model.variables)){
     elt <- unlist(strsplit(model.variables[i], split="$", fixed=TRUE))
     if(length(elt) > 1){
-      assign(elt[length(elt)], eval(parse(text=model.variables[i])))
+      assign(elt[length(elt)], eval(parse(text=model.variables[i]), envir = parent.frame()), envir = parent.frame())
       originalFormula <- gsub(model.variables[i], elt[length(elt)], originalFormula, fixed=TRUE)
       varnames <- append(varnames, elt[length(elt)])
     }else{
@@ -65,7 +64,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   #ADD
   #Identify and use variable names to count missings
   cbindraw.text <- paste0("cbind(", paste(varnames, collapse=","), ")")
-  all.data <- eval(parse(text=cbindraw.text))
+  all.data <- eval(parse(text=cbindraw.text), envir = parent.frame())
   
   Ntotal<-dim(all.data)[1]
   
@@ -91,7 +90,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   # and the data that underlie them. This will include a vector of 1s for the intercept and
   # any dummy variables required for factors
   
-  formula2use <- as.formula(paste0(Reduce(paste, deparse(originalFormula)))) # here we need the formula as a 'call' object
+  formula2use <- as.formula(paste0(Reduce(paste, deparse(originalFormula))), env = parent.frame()) # here we need the formula as a 'call' object
   mod.glm.ds <- glm(formula2use, family=family, x=TRUE, control=glm.control(maxit=1), contrasts=NULL, data=dataTable)
   
   X.mat.orig <- as.matrix(mod.glm.ds$x)
@@ -106,14 +105,14 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   # Remove rows of offset or weights which contain NA in any Y or X variable
   # Rows where offset or weights are missing but Y and X are non-NA, remain at this stage
   cbindtext <- paste0("cbind(", paste(varnames, collapse=","), ")")
-  dtemp <- eval(parse(text=cbindtext))
+  dtemp <- eval(parse(text=cbindtext), envir = parent.frame())
   # now get the above table with no missing values (i.e. complete) and grab the offset variable (the last column)
   row.noNA.YX<-complete.cases(dtemp)
   
   #Both weights and offset
   if(!(is.null(weights))&&!(is.null(offset))){
     cbindtext <- paste0("cbind(", paste(varnames, collapse=","), ",", weights, ",", offset,")")
-    dtemp <- eval(parse(text=cbindtext))
+    dtemp <- eval(parse(text=cbindtext), envir = parent.frame())
     # now get the above table with no missing values (i.e. complete) and grab the offset variable (the last column)
     cmplt <- dtemp[row.noNA.YX,]
     offsetvar.orig <- cmplt[, dim(cmplt)[2]] 
@@ -123,7 +122,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   #Offset no weights 
   if(is.null(weights)&&!(is.null(offset))){
     cbindtext <- paste0("cbind(", paste(varnames, collapse=","), ",", offset, ")")
-    dtemp <- eval(parse(text=cbindtext))
+    dtemp <- eval(parse(text=cbindtext), envir = parent.frame())
     # now get the above table with no missing values (i.e. complete) and grab the offset variable (the last column)
     cmplt <- dtemp[row.noNA.YX,]
     offsetvar.orig <- cmplt[, dim(cmplt)[2]]
@@ -132,7 +131,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   #Weights no offset
   if(!(is.null(weights))&&(is.null(offset))){
     cbindtext <- paste0("cbind(", paste(varnames, collapse=","), ",", weights, ")")
-    dtemp <- eval(parse(text=cbindtext))
+    dtemp <- eval(parse(text=cbindtext), envir = parent.frame())
     # now get the above table with no missing values (i.e. complete) and grab the offset variable (the last column)
     cmplt <- dtemp[row.noNA.YX,]
     weightsvar.orig <- cmplt[, dim(cmplt)[2]]    

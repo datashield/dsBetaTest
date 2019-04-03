@@ -44,8 +44,8 @@ BooleDS.o <- function(V1.name=NULL, V2.name=NULL, Boolean.operator.n=NULL, na.as
 
   ##########CHECK NOT LONG SPECIFIED VECTOR##############
 
-  V1 <- eval(parse(text=V1.name))
-  V2 <- eval(parse(text=V2.name))
+  V1 <- eval(parse(text=V1.name), envir = parent.frame())
+  V2 <- eval(parse(text=V2.name), envir = parent.frame())
 
   if(is.character(V1)){
     studysideMessage <- "FAILED: V_i is character, please convert to numeric, factor or logical before running Boole"
@@ -85,14 +85,14 @@ BooleDS.o <- function(V1.name=NULL, V2.name=NULL, Boolean.operator.n=NULL, na.as
   if(V2.length==V1.length){
     for(j in 1:V1.length){
       command.text <- paste0(V1.name,"[",j,"]",Boolean.operator,V2.name,"[",j,"]")
-      Boolean.indicator[j] <- eval(parse(text=command.text))*1
+      Boolean.indicator[j] <- eval(parse(text=command.text), envir = parent.frame())*1
     }
   }
 
   if(V2.length==1){
     for(j in 1:V1.length){
       command.text <- paste0(V1.name,"[",j,"]",Boolean.operator,V2.name)
-      Boolean.indicator[j] <- eval(parse(text=command.text))*1
+      Boolean.indicator[j] <- eval(parse(text=command.text), envir = parent.frame())*1
     }
   }
 

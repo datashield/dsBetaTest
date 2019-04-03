@@ -26,7 +26,7 @@ lexisDS1.o <- function(exitCol=NULL){
     return(out.obj)
   }
   
-  exposure <- eval(parse(text=exitCol))
+  exposure <- eval(parse(text=exitCol), envir = parent.frame())
   
   max.time <- max(exposure, na.rm=TRUE)
   random.multiplier <- runif(1,1.01,1.05)

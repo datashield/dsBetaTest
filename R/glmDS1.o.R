@@ -16,7 +16,6 @@
 #' analysed under the specified model 
 #' @author Burton PR
 #' @export
-#'
 glmDS1.o <- function(formula, family, weights, data){
   
   errorMessage <- "No errors"
@@ -34,7 +33,7 @@ glmDS1.o <- function(formula, family, weights, data){
   if(is.null(data)){
     dataTable <- NULL 
   }else{
-    dataTable <- eval(parse(text=data))
+    dataTable <- eval(parse(text=data), envir = parent.frame())
   }
   
   formulatext <- Reduce(paste, deparse(formula))
@@ -47,7 +46,7 @@ glmDS1.o <- function(formula, family, weights, data){
   formulatext <- gsub("*", "|", formulatext, fixed=TRUE)
   formulatext <- gsub("||", "|", formulatext, fixed=TRUE)
   
-  formula2use <- as.formula(paste0(Reduce(paste, deparse(originalFormula)))) # here we need the formula as a 'call' object
+  formula2use <- as.formula(paste0(Reduce(paste, deparse(originalFormula))), env = parent.frame()) # here we need the formula as a 'call' object
   mod.glm.ds <- glm(formula2use, family=family, x=TRUE, control=glm.control(maxit=1), contrasts=NULL, data=dataTable)
   
   #Remember model.variables and then varnames INCLUDE BOTH yvect AND linear predictor components 
@@ -57,7 +56,7 @@ glmDS1.o <- function(formula, family, weights, data){
   for(i in 1:length(model.variables)){
     elt <- unlist(strsplit(model.variables[i], split="$", fixed=TRUE))
     if(length(elt) > 1){
-      assign(elt[length(elt)], eval(parse(text=model.variables[i])))
+      assign(elt[length(elt)], eval(parse(text=model.variables[i]), envir = parent.frame()), envir = parent.frame())
       originalFormula <- gsub(model.variables[i], elt[length(elt)], originalFormula, fixed=TRUE)
       varnames <- append(varnames, elt[length(elt)])
     }else{
@@ -94,7 +93,7 @@ glmDS1.o <- function(formula, family, weights, data){
     w.vect <- rep(1,length(y.vect))
   }else{
     ftext <- paste0("cbind(",weights,")")
-    w.vect <- eval(parse(text=ftext))
+    w.vect <- eval(parse(text=ftext), envir = parent.frame())
   }
   
   ################################

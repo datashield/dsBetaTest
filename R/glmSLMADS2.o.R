@@ -38,7 +38,6 @@
 #' in the call to ds.glmSLMA.o
 #' @author Burton PR
 #' @export
-#'
 glmSLMADS2.o <- function(formula, family, offset, weights, dataName){
 
 #############################################################
@@ -55,7 +54,7 @@ nfilter.glm <- as.numeric(thr$nfilter.glm)
   # Same is done for offset and weights lower down function
 
   if(!is.null(dataName)){
-    dataDF <- eval(parse(text=dataName))
+    dataDF <- eval(parse(text=dataName), envir = parent.frame())
   }else{
     dataDF <- NULL
   }
@@ -85,7 +84,7 @@ nfilter.glm <- as.numeric(thr$nfilter.glm)
   for(i in 1:length(model.variables)){
     elt <- unlist(strsplit(model.variables[i], split="$", fixed=TRUE))
     if(length(elt) > 1){
-      assign(elt[length(elt)], eval(parse(text=model.variables[i])))
+      assign(elt[length(elt)], eval(parse(text=model.variables[i]), envir = parent.frame()), envir = parent.frame())
       originalFormula.modified <- gsub(model.variables[i], elt[length(elt)], originalFormula, fixed=TRUE)
       varnames <- append(varnames, elt[length(elt)])
     }else{
@@ -106,7 +105,7 @@ nfilter.glm <- as.numeric(thr$nfilter.glm)
   }
 		 
   # Identify and use variable names to count missings
-  all.data <- eval(parse(text=cbindraw.text))
+  all.data <- eval(parse(text=cbindraw.text), envir = parent.frame())
 	
   Ntotal <- dim(all.data)[1]
 	
@@ -117,7 +116,7 @@ nfilter.glm <- as.numeric(thr$nfilter.glm)
   Nvalid <- N.nomiss.any
   Nmissing <- Ntotal-Nvalid
 
-  formula2use <- as.formula(paste0(Reduce(paste, deparse(originalFormula)))) # here we need the formula as a 'call' object
+  formula2use <- as.formula(paste0(Reduce(paste, deparse(originalFormula))), env = parent.frame()) # here we need the formula as a 'call' object
 
   ################################################################## 
   #sort out offset and weights
@@ -125,14 +124,14 @@ nfilter.glm <- as.numeric(thr$nfilter.glm)
 
   if(!(is.null(offset))){
     cbindtext.offset <- paste0("cbind(", offset,")")
-    offset <- eval(parse(text=cbindtext.offset))
+    offset <- eval(parse(text=cbindtext.offset), envir = parent.frame())
   }
 
   varname.weights<-paste0(weights)
 
   if(!(is.null(weights))){
     cbindtext.weights <- paste0("cbind(", weights,")")
-    weights <- eval(parse(text=cbindtext.weights))
+    weights <- eval(parse(text=cbindtext.weights), envir = parent.frame())
   }
 
   ##################################################################
