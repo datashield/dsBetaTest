@@ -35,7 +35,8 @@ AggregateMethods: meanSdGpDS,
     unListDS.o,
     dimDS.o,
     varDS.o,
-    lengthDS.o
+    lengthDS.o,
+    scatterPlotDS.o
 AssignMethods: lexisDS2.o,
     lexisDS3.o,
     asFactorDS2.o,
