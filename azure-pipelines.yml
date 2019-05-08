@@ -42,11 +42,12 @@ steps:
     sudo apt-get install -qq libxml2-dev libcurl4-openssl-dev libssl-dev -y
     sudo apt-get install -qq r-base -y
     sudo R -e "install.packages('devtools', dependencies=TRUE)"
-    
+
     sudo R -e "install.packages('dsBase', repos=c(getOption('repos'), 'http://cran.obiba.org'), dependencies=TRUE)"
     sudo R -e "install.packages('dsStats', repos=c(getOption('repos'), 'http://cran.obiba.org'), dependencies=TRUE)"
     sudo R -e "install.packages('dsGraphics', repos=c(getOption('repos'), 'http://cran.obiba.org'), dependencies=TRUE)"
     sudo R -e "install.packages('dsModelling', repos=c(getOption('repos'), 'http://cran.obiba.org'), dependencies=TRUE)"
+    sudo R -e "install.packages('RANN', repos=c(getOption('repos'), 'http://cran.obiba.org'), dependencies=TRUE)"
   displayName: 'Install R'
 
 - bash: |
