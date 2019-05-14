@@ -40,7 +40,7 @@ rBinomDS.o<-function (n, size = 1, prob = 0.5){
 	prob<-eval(parse(text=command.text))
 	}
 		
-	rbinom(n, size=size, prob=prob)
+	stats::rbinom(n, size=size, prob=prob)
 }
 #ASSIGN FUNCTION
 # rBinomDS.o

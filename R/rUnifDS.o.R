@@ -45,7 +45,7 @@ rUnifDS.o<-function (n, min = 0, max = 1, force.output.to.k.decimal.places=9){
 	max<-eval(parse(text=command.text))
 	}
 		
-	random.number.vector<-runif(n, min=min, max=max)
+	random.number.vector<-stats::runif(n, min=min, max=max)
 	
 	if(force.output.to.k.decimal.places<9){
 	random.number.vector<-round(random.number.vector,force.output.to.k.decimal.places)

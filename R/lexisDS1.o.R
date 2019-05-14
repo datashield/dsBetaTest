@@ -29,7 +29,7 @@ lexisDS1.o <- function(exitCol=NULL){
   exposure <- eval(parse(text=exitCol))
   
   max.time <- max(exposure, na.rm=TRUE)
-  random.multiplier <- runif(1,1.01,1.05)
+  random.multiplier <- stats::runif(1,1.01,1.05)
   
   max.time <- max.time*random.multiplier
   

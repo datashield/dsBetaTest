@@ -140,11 +140,11 @@ for(j in 1:length(var2recode)){
 return.obj<-var.recoded
 
 #DISCLOSURE TRAP ON LENGTH OF NA AND non-NA ELEMENTS OF ORIGINAL AND RECODED VECTORS
-mark.original<-complete.cases(var2recode)
+mark.original<-stats::complete.cases(var2recode)
 non.NA.original.vector<-var2recode[mark.original]
 non.NA.length.original<-length(non.NA.original.vector)
 
-mark.recoded<-complete.cases(var.recoded)
+mark.recoded<-stats::complete.cases(var.recoded)
 non.NA.recoded.vector<-var.recoded[mark.recoded]
 non.NA.length.recoded<-length(non.NA.recoded.vector)
 

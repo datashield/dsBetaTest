@@ -2,9 +2,11 @@
 #' @title messageDS.o
 #' @description This function allows for error messages arising from the 
 #' running of a server-side assign function to be returned to the client-side
-#' @param message.obj is a character string, containing the name of the list containing the
+#' @details returns error messages, associated with 'message.object.name', which arise from the
+#' running of a server-side assign function to be returned to the client-side
+#' @param message.object.name is a character string, containing the name of the list containing the
 #' message. See the header of the client-side function ds.message.o for more details.
-#' #' @return a list object from each study, containing whatever message has been written by
+#' @return a list object from each study, containing whatever message has been written by
 #' DataSHIELD into $studysideMessage.
 #' @author Burton PR
 #' @export
@@ -35,7 +37,7 @@ boole.A1.exists<-eval(parse(text=A1.exists.text))
 
 
 if(!boole.A1.exists) {
-out.obj<-"Error: the object <message.obj> does not exist in this datasource" 
+out.obj<-"Error: the object <message.object.name> does not exist in this datasource" 
 return(out.obj)
 }
 

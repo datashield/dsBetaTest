@@ -110,14 +110,14 @@ nfilter.glm <- as.numeric(thr$nfilter.glm)
 	
   Ntotal <- dim(all.data)[1]
 	
-  nomiss.any <- complete.cases(all.data)
+  nomiss.any <- stats::complete.cases(all.data)
   nomiss.any.data <- all.data[nomiss.any,]
   N.nomiss.any <- dim(nomiss.any.data)[1]
 
   Nvalid <- N.nomiss.any
   Nmissing <- Ntotal-Nvalid
 
-  formula2use <- as.formula(paste0(Reduce(paste, deparse(originalFormula)))) # here we need the formula as a 'call' object
+  formula2use <- stats::as.formula(paste0(Reduce(paste, deparse(originalFormula)))) # here we need the formula as a 'call' object
 
   ################################################################## 
   #sort out offset and weights
@@ -137,7 +137,7 @@ nfilter.glm <- as.numeric(thr$nfilter.glm)
 
   ##################################################################
 
-  mg <- glm(formula2use, family=family, offset=offset, weights=weights, data=dataDF)
+  mg <- stats::glm(formula2use, family=family, offset=offset, weights=weights, data=dataDF)
 
   outlist<-list(rank=mg$rank, aic=mg$aic, 
               iter=mg$iter, converged=mg$converged,

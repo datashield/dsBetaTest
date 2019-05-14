@@ -40,7 +40,7 @@ nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
 
   # Cbind the columns of the two variables and remove any rows that include NAs
   data.table <- cbind.data.frame(x, y)
-  data.complete <- na.omit(data.table)
+  data.complete <- stats::na.omit(data.table)
 
   x <- as.vector(data.complete[,1])
   y <- as.vector(data.complete[,2])
@@ -48,11 +48,11 @@ nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
   if(method.indicator==1){
 
   # Load the RANN package to use the 'nn2' function that searches for the Nearest Neighbours  
-  library(RANN)
+  # library(RANN)
   
   # standardise the variables
-  x.standardised <- (x-mean(x))/sd(x)
-  y.standardised <- (y-mean(y))/sd(y)
+  x.standardised <- (x-mean(x))/stats::sd(x)
+  y.standardised <- (y-mean(y))/stats::sd(y)
 
   # Create a data.frame for the variables
   data <- data.frame(x.standardised, y.standardised)
@@ -69,7 +69,7 @@ nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
   }
 
   # Find the k-1 nearest neighbours of each data point 
-  nearest <- nn2(data, k = neighbours)
+  nearest <- RANN::nn2(data, k = neighbours)
 
   # Calculate the centroid of each n nearest data points 
   x.centroid <- matrix()
@@ -80,16 +80,16 @@ nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
   }
 
   # Calculate the scaling factor
-  x.scalingFactor <- sd(x.standardised)/sd(x.centroid)
-  y.scalingFactor <- sd(y.standardised)/sd(y.centroid)
+  x.scalingFactor <- stats::sd(x.standardised)/stats::sd(x.centroid)
+  y.scalingFactor <- stats::sd(y.standardised)/stats::sd(y.centroid)
 
   # Apply the scaling factor to the centroids
   x.masked <- x.centroid * x.scalingFactor
   y.masked <- y.centroid * y.scalingFactor
 
   # Shift the centroids back to the actual position and scale of the original data
-  x.new <- (x.masked * sd(x)) + mean(x)
-  y.new <- (y.masked * sd(y)) + mean(y)
+  x.new <- (x.masked * stats::sd(x)) + mean(x)
+  y.new <- (y.masked * stats::sd(y)) + mean(y)
   
   }
 
@@ -108,9 +108,9 @@ nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
     y.seed <- floor((yy[1] %% 1)*1000)+floor((yy[2] %% 1)*1000)+floor((yy[3] %% 1)*1000)
     
     set.seed(x.seed)
-    x.new <- x + rnorm(N.data, mean=0, sd=sqrt(0.1*var(x)))
+    x.new <- x + stats::rnorm(N.data, mean=0, sd=sqrt(0.1*stats::var(x)))
     set.seed(y.seed)
-    y.new <- y + rnorm(N.data, mean=0, sd=sqrt(0.1*var(y)))
+    y.new <- y + stats::rnorm(N.data, mean=0, sd=sqrt(0.1*stats::var(y)))
     
   }
   

@@ -62,7 +62,7 @@ nfilter.subset <- as.numeric(thr$nfilter.subset)
                     stringsAsFactors=strAsFactors)
   colnames(dtemp) <-  unlist(clnames)
   if(completeCases){
-    dt <- dtemp[complete.cases(dtemp),]
+    dt <- dtemp[stats::complete.cases(dtemp),]
   }else{
     dt <- dtemp
   }

@@ -85,15 +85,15 @@ reShapeDS.o <- function(data.name, varying.transmit, v.names.transmit, timevar.n
  # times<-t(matrix(times))
  
  if(direction=="wide"){
- output <- reshape(data=data, varying=varying, v.names=v.names, timevar=timevar, 
-                 idvar=idvar, 
-                 drop=drop, direction=direction, new.row.names = NULL, sep=sep, split=split) 
+ output <- stats::reshape(data=data, varying=varying, v.names=v.names, timevar=timevar, 
+                          idvar=idvar, 
+                          drop=drop, direction=direction, new.row.names = NULL, sep=sep, split=split) 
  }
  
  if(direction=="long"){
-    output <- reshape(data=data, varying=varying, timevar=timevar, 
-                 idvar=idvar, 
-                 direction=direction)
+    output <- stats::reshape(data=data, varying=varying, timevar=timevar, 
+                             idvar=idvar, 
+                             direction=direction)
  }
  
 				 

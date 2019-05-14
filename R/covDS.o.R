@@ -65,7 +65,7 @@ covDS.o <- function(x=NULL, y=NULL, use=NULL){
   Xpar.invalid <- rep(0, num.Xpar)
 
   for(pj in 1:num.Xpar){
-    unique.values.noNA <- unique((X.mat[,pj])[complete.cases(X.mat[,pj])]) 
+    unique.values.noNA <- unique((X.mat[,pj])[stats::complete.cases(X.mat[,pj])]) 
     if(length(unique.values.noNA)==2){
       tabvar <- table(X.mat[,pj])[table(X.mat[,pj])>=1] #tabvar COUNTS N IN ALL CATEGORIES WITH AT LEAST ONE OBSERVATION
       min.category <- min(tabvar)
@@ -123,11 +123,11 @@ covDS.o <- function(x=NULL, y=NULL, use=NULL){
     column.NAs <- matrix(ncol=N.vars, nrow=1)
     colnames(column.NAs) <- cls
     for(i in 1:N.vars){
-	column.NAs[1,i] <- length(dataframe[,i])-length(dataframe[complete.cases(dataframe[,i]),i])
+	column.NAs[1,i] <- length(dataframe[,i])-length(dataframe[stats::complete.cases(dataframe[,i]),i])
     }
 	
     # if use is casewise.complete first remove any rows from the dataframe that include NAs
-    casewise.dataframe <- dataframe[complete.cases(dataframe),]
+    casewise.dataframe <- dataframe[stats::complete.cases(dataframe),]
     
     # calculate the number of NAs casewise
     casewise.NAs <- as.matrix(dim(dataframe)[1]-dim(casewise.dataframe)[1])
@@ -170,7 +170,7 @@ covDS.o <- function(x=NULL, y=NULL, use=NULL){
     vars <- matrix(ncol=1, nrow=N.vars)
     rownames(sums) <- cls
     for(m in 1:N.vars){
-      vars[m,1] <- var(as.numeric(as.character(casewise.dataframe[,m])))
+      vars[m,1] <- stats::var(as.numeric(as.character(casewise.dataframe[,m])))
     }		
 	
     complete.counts <- matrix(dim(casewise.dataframe)[1], ncol=N.vars, nrow=N.vars)
@@ -189,7 +189,7 @@ covDS.o <- function(x=NULL, y=NULL, use=NULL){
       cleaned.pair[[i]] <- list()
       for(j in 1:N.vars){
 	    pair[[i]][[j]] <- as.data.frame(cbind(dataframe[,i], dataframe[,j]))
-        cleaned.pair[[i]][[j]] <- as.data.frame(pair[[i]][[j]][complete.cases(pair[[i]][[j]]),]) 
+        cleaned.pair[[i]][[j]] <- as.data.frame(pair[[i]][[j]][stats::complete.cases(pair[[i]][[j]]),]) 
       } 
     }	
   
@@ -197,7 +197,7 @@ covDS.o <- function(x=NULL, y=NULL, use=NULL){
     column.NAs <- matrix(ncol=N.vars, nrow=1)
     colnames(column.NAs) <- cls
     for(i in 1:N.vars){
-	  column.NAs[1,i] <- length(dataframe[,i])-length(dataframe[complete.cases(dataframe[,i]),i])
+	  column.NAs[1,i] <- length(dataframe[,i])-length(dataframe[stats::complete.cases(dataframe[,i]),i])
     }
    
     # calculate the number of NAs in each pair of variables
@@ -252,7 +252,7 @@ covDS.o <- function(x=NULL, y=NULL, use=NULL){
     colnames(sums) <- cls
     for(m in 1:N.vars){
 	  for(p in 1:N.vars){
-        vars[m,p] <- var(as.numeric(as.character(cleaned.pair[[m]][[p]][,1])))
+        vars[m,p] <- stats::var(as.numeric(as.character(cleaned.pair[[m]][[p]][,1])))
       }		
     }
 	
