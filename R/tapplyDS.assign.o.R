@@ -69,7 +69,7 @@ return(list(studysideMessage=studysideMessage))
 
 
 #select complete cases on X and all INDEX factors only
-all.complete<-complete.cases(X)
+all.complete<-stats::complete.cases(X)
 
 
 for(j in 1:num.factors){
@@ -77,7 +77,7 @@ for(j in 1:num.factors){
 activation.text.a<-paste0("current.factor <-",INDEX.factors[j])
 eval(parse(text=activation.text.a))
 
-all.complete<-all.complete&complete.cases(current.factor)
+all.complete<-all.complete&stats::complete.cases(current.factor)
 }
 
 X.complete<-X[all.complete]

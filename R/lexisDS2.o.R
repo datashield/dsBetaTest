@@ -266,7 +266,7 @@ lexisDS2.o <- function(datatext=NULL, intervalWidth, maxmaxtime, idCol, entryCol
   
   ######################################################################
   ##########ERROR NEEDS CORRECTING
-  time.id.vector<-ave(idSeq.vector,idSeq.vector,FUN=seq_along)
+  time.id.vector<-stats::ave(idSeq.vector,idSeq.vector,FUN=seq_along)
   
   time.id.vector<-time.id.vector+first.int.exposed[idSeq.vector]-1
   ######################################################################
@@ -274,7 +274,7 @@ lexisDS2.o <- function(datatext=NULL, intervalWidth, maxmaxtime, idCol, entryCol
   
   expanded.template<-cbind(idSeq.vector,time.id.vector,survival.vector,cens.vector)
   
-  expanded.template<-expanded.template[complete.cases(expanded.template),]
+  expanded.template<-expanded.template[stats::complete.cases(expanded.template),]
   
   expanded.carry.data<-carry.data[expanded.template[,1],]
   

@@ -69,19 +69,19 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   
   Ntotal<-dim(all.data)[1]
   
-  nomiss.any<-complete.cases(all.data)
+  nomiss.any<-stats::complete.cases(all.data)
   nomiss.any.data<-all.data[nomiss.any,]
   N.nomiss.any<-dim(nomiss.any.data)[1]
   
   Nvalid<-N.nomiss.any
   Nmissing<-Ntotal-Nvalid
   
-  nomiss.qvar<-complete.cases(all.data[,1])
+  nomiss.qvar<-stats::complete.cases(all.data[,1])
   nomiss.qvar.data<-all.data[nomiss.qvar,]
   N.nomiss.qvar<-dim(nomiss.qvar.data)[1]
   Nmissing.qvar<-Ntotal-N.nomiss.qvar
   
-  nomiss.bvar<-complete.cases(all.data[,2])
+  nomiss.bvar<-stats::complete.cases(all.data[,2])
   nomiss.bvar.data<-all.data[nomiss.bvar,]
   N.nomiss.bvar<-dim(nomiss.bvar.data)[1]
   Nmissing.bvar<-Ntotal-N.nomiss.bvar
@@ -91,8 +91,8 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   # and the data that underlie them. This will include a vector of 1s for the intercept and
   # any dummy variables required for factors
   
-  formula2use <- as.formula(paste0(Reduce(paste, deparse(originalFormula)))) # here we need the formula as a 'call' object
-  mod.glm.ds <- glm(formula2use, family=family, x=TRUE, control=glm.control(maxit=1), contrasts=NULL, data=dataTable)
+  formula2use <- stats::as.formula(paste0(Reduce(paste, deparse(originalFormula)))) # here we need the formula as a 'call' object
+  mod.glm.ds <- stats::glm(formula2use, family=family, x=TRUE, control=stats::glm.control(maxit=1), contrasts=NULL, data=dataTable)
   
   X.mat.orig <- as.matrix(mod.glm.ds$x)
   y.vect.orig <-as.vector(mod.glm.ds$y)
@@ -108,7 +108,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   cbindtext <- paste0("cbind(", paste(varnames, collapse=","), ")")
   dtemp <- eval(parse(text=cbindtext))
   # now get the above table with no missing values (i.e. complete) and grab the offset variable (the last column)
-  row.noNA.YX<-complete.cases(dtemp)
+  row.noNA.YX<-stats::complete.cases(dtemp)
   
   #Both weights and offset
   if(!(is.null(weights))&&!(is.null(offset))){
@@ -147,7 +147,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   #Both weights and offset
   if(!(is.null(weights))&&!(is.null(offset))){
     YXWO.orig<-cbind(y.vect.orig,X.mat.orig,weightsvar.orig,offsetvar.orig)
-    YXWO.complete<-YXWO.orig[complete.cases(YXWO.orig),]
+    YXWO.complete<-YXWO.orig[stats::complete.cases(YXWO.orig),]
     numcol.YXWO<-dim(YXWO.orig)[2]
     y.vect<-YXWO.complete[,1]
     #NB - must specify X.mat as.matrix because otherwise with a one parameter linear predictor
@@ -161,7 +161,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   #Offset no weights
   if(is.null(weights)&&!(is.null(offset))){
     YXO.orig<-cbind(y.vect.orig,X.mat.orig,offsetvar.orig)
-    YXO.complete<-YXO.orig[complete.cases(YXO.orig),]
+    YXO.complete<-YXO.orig[stats::complete.cases(YXO.orig),]
     numcol.YXO<-dim(YXO.orig)[2]
     y.vect<-YXO.complete[,1]
     #NB - must specify X.mat as.matrix because otherwise with a one parameter linear predictor
@@ -175,7 +175,7 @@ tTestFDS2 <- function (formula, family, beta.vect, offset, weights, data) {
   #Weights no offset
   if(!(is.null(weights))&&(is.null(offset))){
     YXW.orig<-cbind(y.vect.orig,X.mat.orig,weightsvar.orig)
-    YXW.complete<-YXW.orig[complete.cases(YXW.orig),]
+    YXW.complete<-YXW.orig[stats::complete.cases(YXW.orig),]
     numcol.YXW<-dim(YXW.orig)[2]
     y.vect<-YXW.complete[,1]
     X.mat<-as.matrix(YXW.complete[,(2:(numcol.YXW-1))])

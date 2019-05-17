@@ -11,6 +11,10 @@ unListDS.o(x.name, recursive, newobj)
 class list. It must be specified in inverted commas. But this argument is
 usually specified directly by <x.name> argument of the clientside function
 {ds.unList.o}}
+
+\item{recursive}{logical. Should unlisting be applied to list components of x.name}
+
+\item{newobj}{created object}
 }
 \value{
 the object specified by the <newobj> argument (or its default name

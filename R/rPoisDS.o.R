@@ -31,7 +31,7 @@ rPoisDS.o<-function (n, lambda = 1){
 	lambda<-eval(parse(text=command.text))
 	}
 		
-	rpois(n, lambda=lambda)
+	stats::rpois(n, lambda=lambda)
 }
 #ASSIGN FUNCTION
 # rPoisDS.o

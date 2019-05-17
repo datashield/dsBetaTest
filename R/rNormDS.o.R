@@ -45,7 +45,7 @@ rNormDS.o<-function (n, mean = 0, sd = 1, force.output.to.k.decimal.places=9){
 	sd<-eval(parse(text=command.text))
 	}
 
-	random.number.vector<-rnorm(n, mean=mean, sd=sd)
+	random.number.vector<-stats::rnorm(n, mean=mean, sd=sd)
 	
 	if(force.output.to.k.decimal.places<9){
 	random.number.vector<-round(random.number.vector,force.output.to.k.decimal.places)

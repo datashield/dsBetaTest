@@ -10,19 +10,16 @@ steps:
     sudo apt-get install -qq libxml2-dev libcurl4-openssl-dev libssl-dev -y
     sudo apt-get install -qq r-base -y
     sudo R -e "install.packages('devtools', dependencies=TRUE)"
+    sudo R -e "install.packages('RANN', dependencies=TRUE)"
 
     sudo R -e "devtools::install_github(repo='datashield/dsBase', ref='master')"
     sudo R -e "devtools::install_github(repo='datashield/dsStats', ref='master')"
     sudo R -e "devtools::install_github(repo='datashield/dsGraphics', ref='master')"
     sudo R -e "devtools::install_github(repo='datashield/dsModelling', ref='master')"
-    sudo R -e "install.packages('RANN', dependencies=TRUE)"
-  displayName: 'Install R'
+  displayName: 'Install R Client'
 
 - bash: |
-    R CMD BATCH --quiet azure-pipelines.R azure-pipelines.Rout || true
-  displayName: 'Test'
-
-- bash: |
-    cat azure-pipelines.Rout
-    grep "0 error" azure-pipelines.Rout
-  displayName: 'Results'
+    R -e "library('devtools'); devtools::check(args = c('--no-examples'))" | tee azure-pipelines_check.Rout
+    grep --quiet "0 error" azure-pipelines_check.Rout
+  displayName: 'Devtools checks'
+  condition: always()

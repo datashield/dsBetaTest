@@ -22,6 +22,8 @@
 #' class list. It must be specified in inverted commas. But this argument is
 #' usually specified directly by <x.name> argument of the clientside function
 #' {ds.unList.o}
+#' @param recursive logical. Should unlisting be applied to list components of x.name 
+#' @param newobj created object
 #' @return the object specified by the <newobj> argument (or its default name
 #' <x.name>.mat) which is written to the serverside.
 #' In addition, two validity messages are returned. The first confirms an output

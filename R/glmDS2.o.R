@@ -103,7 +103,7 @@ glmDS2.o <- function (formula, family, beta.vect, offset, weights, dataName) {
   
   Ntotal <- dim(all.data)[1]
   
-  nomiss.any <- complete.cases(all.data)
+  nomiss.any <- stats::complete.cases(all.data)
   nomiss.any.data <- all.data[nomiss.any,]
   N.nomiss.any <- dim(nomiss.any.data)[1]
   
@@ -116,8 +116,8 @@ glmDS2.o <- function (formula, family, beta.vect, offset, weights, dataName) {
   # and the data that underlie them. This will include a vector of 1s for the intercept and
   # any dummy variables required for factors
   
-  formula2use <- as.formula(paste0(Reduce(paste, deparse(originalFormula)))) # here we need the formula as a 'call' object
-  mod.glm.ds <- glm(formula2use, family=family, x=TRUE, control=glm.control(maxit=1), contrasts=NULL, data=dataDF)
+  formula2use <- stats::as.formula(paste0(Reduce(paste, deparse(originalFormula)))) # here we need the formula as a 'call' object
+  mod.glm.ds <- stats::glm(formula2use, family=family, x=TRUE, control=stats::glm.control(maxit=1), contrasts=NULL, data=dataDF)
   
   X.mat.orig <- as.matrix(mod.glm.ds$x)
   y.vect.orig <-as.vector(mod.glm.ds$y)
@@ -128,7 +128,7 @@ glmDS2.o <- function (formula, family, beta.vect, offset, weights, dataName) {
   cbindtext <- paste0("cbind(", paste(varnames, collapse=","), ")")
   dtemp <- eval(parse(text=cbindtext))
   # now get the above table with no missing values (i.e. complete) and grab the offset variable (the last column)
-  row.noNA.YX <- complete.cases(dtemp)
+  row.noNA.YX <- stats::complete.cases(dtemp)
   
   #Both weights and offset
   if(!(is.null(weights))&&!(is.null(offset))){
@@ -167,7 +167,7 @@ glmDS2.o <- function (formula, family, beta.vect, offset, weights, dataName) {
   #Both weights and offset
   if(!(is.null(weights))&&!(is.null(offset))){
     YXWO.orig<-cbind(y.vect.orig,X.mat.orig,weightsvar.orig,offsetvar.orig)
-    YXWO.complete<-YXWO.orig[complete.cases(YXWO.orig),]
+    YXWO.complete<-YXWO.orig[stats::complete.cases(YXWO.orig),]
     numcol.YXWO<-dim(YXWO.orig)[2]
     y.vect<-YXWO.complete[,1]
     #NB - must specify X.mat as.matrix because otherwise with a one parameter linear predictor
@@ -181,7 +181,7 @@ glmDS2.o <- function (formula, family, beta.vect, offset, weights, dataName) {
   #Offset no weights
   if(is.null(weights)&&!(is.null(offset))){
     YXO.orig<-cbind(y.vect.orig,X.mat.orig,offsetvar.orig)
-    YXO.complete<-YXO.orig[complete.cases(YXO.orig),]
+    YXO.complete<-YXO.orig[stats::complete.cases(YXO.orig),]
     numcol.YXO<-dim(YXO.orig)[2]
     y.vect<-YXO.complete[,1]
     #NB - must specify X.mat as.matrix because otherwise with a one parameter linear predictor
@@ -195,7 +195,7 @@ glmDS2.o <- function (formula, family, beta.vect, offset, weights, dataName) {
   #Weights no offset
   if(!(is.null(weights))&&(is.null(offset))){
     YXW.orig<-cbind(y.vect.orig,X.mat.orig,weightsvar.orig)
-    YXW.complete<-YXW.orig[complete.cases(YXW.orig),]
+    YXW.complete<-YXW.orig[stats::complete.cases(YXW.orig),]
     numcol.YXW<-dim(YXW.orig)[2]
     y.vect<-YXW.complete[,1]
     X.mat<-as.matrix(YXW.complete[,(2:(numcol.YXW-1))])
@@ -290,7 +290,7 @@ glmDS2.o <- function (formula, family, beta.vect, offset, weights, dataName) {
   y.invalid<-0
   
   #COUNT NUMBER OF UNIQUE NON-MISSING VALUES - DISCLOSURE RISK ONLY ARISES WITH TWO LEVELS
-  unique.values.noNA.y<-unique(y.vect[complete.cases(y.vect)])
+  unique.values.noNA.y<-unique(y.vect[stats::complete.cases(y.vect)])
   
   #IF TWO LEVELS, CHECK WHETHER EITHER LEVEL 0 < n < nfilter.tab
   
@@ -314,7 +314,7 @@ glmDS2.o <- function (formula, family, beta.vect, offset, weights, dataName) {
   Xpar.invalid<-rep(0,num.Xpar)
   
   for(pj in 1:num.Xpar){
-    unique.values.noNA<-unique((X.mat[,pj])[complete.cases(X.mat[,pj])]) 
+    unique.values.noNA<-unique((X.mat[,pj])[stats::complete.cases(X.mat[,pj])]) 
     
     if(length(unique.values.noNA)==2){
       tabvar<-table(X.mat[,pj])[table(X.mat[,pj])>=1] #tabvar COUNTS N IN ALL CATEGORIES WITH AT LEAST ONE OBSERVATION
@@ -332,7 +332,7 @@ glmDS2.o <- function (formula, family, beta.vect, offset, weights, dataName) {
   #Keep same object name as in glmDS1
   w.vect <- weightsvar
   
-  unique.values.noNA.w<-unique(w.vect[complete.cases(w.vect)])
+  unique.values.noNA.w<-unique(w.vect[stats::complete.cases(w.vect)])
   
   if(length(unique.values.noNA.w)==2){
     tabvar<-table(w.vect)[table(w.vect)>=1]   #tabvar COUNTS N IN ALL CATEGORIES WITH AT LEAST ONE OBSERVATION
