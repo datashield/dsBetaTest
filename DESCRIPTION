@@ -68,6 +68,8 @@ Options:
     nfilter.string=80,
     nfilter.subset=3,
     nfilter.stringShort=20,
-    nfilter.tab=3
+    nfilter.tab=3,
+    nfilter.noise=0.25,
+    nfilter.levels=0.33
 RoxygenNote: 6.1.1
 Encoding: UTF-8
