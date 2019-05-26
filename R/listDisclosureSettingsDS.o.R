@@ -30,7 +30,7 @@ listDisclosureSettingsDS.o <- function(){
   if (is.null(nf.levels))
     nf.levels <- getOption("default.nfilter.levels")
   nf.noise <- getOption("nfilter.noise")
-  if (is.null(nf.noice))
+  if (is.null(nf.noise))
     nf.noise <- getOption("default.nfilter.noise")
   nfilter.privacy.old <- getOption("datashield.privacyLevel")
 
