@@ -14,7 +14,7 @@ matrixInvertDS <- function(M1.name=NULL){
 
 #########################################################################
 # DataSHIELD MODULE: CAPTURE THE nfilter SETTINGS           			#
-thr<-dsBetaTest::listDisclosureSettingsDS.o()							#
+thr<-listDisclosureSettingsDS.o()							#
 #nfilter.tab<-as.numeric(thr$nfilter.tab)								#
 #nfilter.glm<-as.numeric(thr$nfilter.glm)								#
 #nfilter.subset<-as.numeric(thr$nfilter.subset)          				#
@@ -79,6 +79,3 @@ return(output)
 
 #ASSIGN FUNCTION
 # matrixInvertDS
-
-
-

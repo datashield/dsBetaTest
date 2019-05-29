@@ -21,7 +21,7 @@
 matrixDiagDS <- function(x1.transmit,aim,nrows.transmit){
 #########################################################################
 # DataSHIELD MODULE: CAPTURE THE nfilter SETTINGS           			#
-thr<-dsBetaTest::listDisclosureSettingsDS.o()							#
+thr<-listDisclosureSettingsDS.o()							#
 #nfilter.tab<-as.numeric(thr$nfilter.tab)								#
 #nfilter.glm<-as.numeric(thr$nfilter.glm)								#
 #nfilter.subset<-as.numeric(thr$nfilter.subset)          				#
