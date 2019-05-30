@@ -37,7 +37,8 @@ AggregateMethods: meanSdGpDS,
     dimDS.o,
     varDS.o,
     lengthDS.o,
-    scatterPlotDS.o
+    scatterPlotDS.o,
+    matrixDetDS1
 AssignMethods: lexisDS2.o,
     lexisDS3.o,
     asFactorDS2.o,
@@ -61,7 +62,14 @@ AssignMethods: lexisDS2.o,
     asNumericDS.o,
     cbindDS.o,
     mergeDS.o,
-    rbindDS.o
+    rbindDS.o,
+    matrixDetDS2,
+    matrixDiagDS,
+    matrixDimnamesDS,
+    matrixDS,
+    matrixInvertDS,
+    matrixMultDS,
+    matrixTransposeDS
 Options:
     default.nfilter.glm=0.37,
     default.nfilter.kNN=3,
