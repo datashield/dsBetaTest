@@ -42,7 +42,7 @@ seedDS.o <- function(x=NULL){
   #############################################################
   
  # remove any missing  
- x.noMissing <- as.vector(na.omit(x))
+ x.noMissing <- as.vector(stats::na.omit(x))
  
  # remove any zeros to prevent the case that many values of x are zeros
  if (length(which(x.noMissing==0))>=1){
@@ -63,7 +63,7 @@ seedDS.o <- function(x=NULL){
    stop(paste0("the vector that generates the seed number generator has less than ", nfilter.levels*100, "% of the initial vector's observations"), call.=FALSE)
  }else{
    # find the 10%, 17%, 24%, 31%, 38%, 45%, 52%, 59%, 66%, 73%, 80% and 87% quantiles
-   x.quants <- quantile(x.new, probs = seq(0.1, 0.9, 0.07), na.rm = FALSE, names = FALSE, type = 1)
+   x.quants <- stats::quantile(x.new, probs = seq(0.1, 0.9, 0.07), na.rm = FALSE, names = FALSE, type = 1)
    # find the module of each quantile divided by 0.25
    x.modulo <- x.quants %% 0.25
    # take the first three decimals of each modulo and then their sum is the seed number

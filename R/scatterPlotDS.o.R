@@ -44,7 +44,7 @@ scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
 
   # Cbind the columns of the two variables and remove any rows that include NAs
   data.table <- cbind.data.frame(x, y)
-  data.complete <- na.omit(data.table)
+  data.complete <- stats::na.omit(data.table)
 
   x <- as.vector(data.complete[,1])
   y <- as.vector(data.complete[,2])
@@ -55,8 +55,8 @@ scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
   library(RANN)
   
   # standardise the variables
-  x.standardised <- (x-mean(x))/sd(x)
-  y.standardised <- (y-mean(y))/sd(y)
+  x.standardised <- (x-mean(x))/stats::sd(x)
+  y.standardised <- (y-mean(y))/stats::sd(y)
 
   # Create a data.frame for the variables
   data <- data.frame(x.standardised, y.standardised)
@@ -73,7 +73,7 @@ scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
   }
 
   # Find the k-1 nearest neighbours of each data point 
-  nearest <- nn2(data, k = neighbours)
+  nearest <- RANN::nn2(data, k = neighbours)
 
   # Calculate the centroid of each n nearest data points 
   x.centroid <- matrix()
@@ -84,16 +84,16 @@ scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
   }
 
   # Calculate the scaling factor
-  x.scalingFactor <- sd(x.standardised)/sd(x.centroid)
-  y.scalingFactor <- sd(y.standardised)/sd(y.centroid)
+  x.scalingFactor <- stats::sd(x.standardised)/stats::sd(x.centroid)
+  y.scalingFactor <- stats::sd(y.standardised)/stats::sd(y.centroid)
 
   # Apply the scaling factor to the centroids
   x.masked <- x.centroid * x.scalingFactor
   y.masked <- y.centroid * y.scalingFactor
 
   # Shift the centroids back to the actual position and scale of the original data
-  x.new <- (x.masked * sd(x)) + mean(x)
-  y.new <- (y.masked * sd(y)) + mean(y)
+  x.new <- (x.masked * stats::sd(x)) + mean(x)
+  y.new <- (y.masked * stats::sd(y)) + mean(y)
   
   }
 
@@ -119,9 +119,9 @@ scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
     y.seed <- seedDS.o(y)
     
     set.seed(x.seed)
-    x.new <- x + rnorm(N.data, mean=0, sd=sqrt(percentage*var(x)))
+    x.new <- x + stats::rnorm(N.data, mean=0, sd=sqrt(percentage*stats::var(x)))
     set.seed(y.seed)
-    y.new <- y + rnorm(N.data, mean=0, sd=sqrt(percentage*var(y)))
+    y.new <- y + stats::rnorm(N.data, mean=0, sd=sqrt(percentage*stats::var(y)))
     
   }
   
