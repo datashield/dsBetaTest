@@ -4,19 +4,22 @@
 \alias{scatterPlotDS.o}
 \title{Calculates the coordinates of the data to be plot}
 \usage{
-scatterPlotDS.o(x, y, k, method.indicator)
+scatterPlotDS.o(x, y, method.indicator, k, noise)
 }
 \arguments{
 \item{x}{the name of a numeric vector, the x-variable.}
 
 \item{y}{the name of a numeric vector, the y-variable.}
 
-\item{k}{the number of the nearest neghbours for which their centroid is calculated if the
-deterministic method is selected.}
-
 \item{method.indicator}{an intiger either 1 or 2. If the user selects the deterministic
 method in the client side function the method.inticator is set to 1 while if the user selects
 the probabilistic method this argument is set to 2.}
+
+\item{k}{the number of the nearest neghbours for which their centroid is calculated if the
+deterministic method is selected.}
+
+\item{noise}{the percentage of the initial variance that is used as the variance of the embedded
+noise if the probabilistic method is selected.}
 }
 \value{
 a list with the x and y coordinates of the data to be plot
