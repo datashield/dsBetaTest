@@ -16,27 +16,31 @@
 #' variables. Thus the function returns always the same noisy data for a given pair of variables.
 #' @param x the name of a numeric vector, the x-variable.
 #' @param y the name of a numeric vector, the y-variable.
-#' @param k the number of the nearest neghbours for which their centroid is calculated if the
-#' deterministic method is selected.
 #' @param method.indicator an intiger either 1 or 2. If the user selects the deterministic
 #' method in the client side function the method.inticator is set to 1 while if the user selects
-#' the probabilistic method this argument is set to 2.    
+#' the probabilistic method this argument is set to 2.
+#' @param k the number of the nearest neghbours for which their centroid is calculated if the
+#' deterministic method is selected.
+#' @param noise the percentage of the initial variance that is used as the variance of the embedded
+#' noise if the probabilistic method is selected.
 #' @return a list with the x and y coordinates of the data to be plot
 #' @author Demetris Avraam for DataSHIELD Development Team
 #' @export
 #' 
-scatterPlotDS.o <- function(x, y, k, method.indicator){
+scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
 
-#############################################################
-# MODULE 1: CAPTURE THE nfilter SETTINGS                    #
-thr <- listDisclosureSettingsDS.o()			      	#
-nfilter.tab <- as.numeric(thr$nfilter.tab)			        		#
-nfilter.glm <- as.numeric(thr$nfilter.glm)				        	#
-nfilter.subset <- as.numeric(thr$nfilter.subset)          	#
-nfilter.string <- as.numeric(thr$nfilter.string)            #
-nfilter.stringShort <- as.numeric(thr$nfilter.stringShort)  #
-nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
-#############################################################
+  #############################################################
+  # MODULE 1: CAPTURE THE nfilter SETTINGS                    #
+  thr <- listDisclosureSettingsDS.o()                         #
+  #nfilter.tab <- as.numeric(thr$nfilter.tab)                 #
+  #nfilter.glm <- as.numeric(thr$nfilter.glm)                 #
+  #nfilter.subset <- as.numeric(thr$nfilter.subset)           #
+  #nfilter.string <- as.numeric(thr$nfilter.string)           #
+  #nfilter.stringShort <- as.numeric(thr$nfilter.stringShort) #
+  nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
+  nfilter.noise <- as.numeric(thr$nfilter.noise)              #
+  #nfilter.levels <- as.numeric(thr$nfilter.levels)           #
+  #############################################################
 
   # Cbind the columns of the two variables and remove any rows that include NAs
   data.table <- cbind.data.frame(x, y)
@@ -48,7 +52,7 @@ nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
   if(method.indicator==1){
 
   # Load the RANN package to use the 'nn2' function that searches for the Nearest Neighbours  
-  # library(RANN)
+  library(RANN)
   
   # standardise the variables
   x.standardised <- (x-mean(x))/stats::sd(x)
@@ -101,16 +105,23 @@ nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
     # Calculate the length of the data.frame after ommitting any rows with NAs 
     N.data <- dim(data)[1]
     
+    # Check if the percentage of the variance that is specified in the argument 'noise'
+    # and is used as the variance of the embedded noise is a greater
+    # than the minimum threshold specified in the filter 'nfilter.noise'
+    if(noise < nfilter.noise){
+      stop(paste0("'noise' must be greater than or equal to ", nfilter.noise), call.=FALSE)
+    }else{
+      percentage <- noise
+    }
+
     # generate a number based on the specific data that will be used as a fixed random number generator
-    xx <- sort(x)
-    yy <- sort(y)
-    x.seed <- floor((xx[1] %% 1)*1000)+floor((xx[2] %% 1)*1000)+floor((xx[3] %% 1)*1000)
-    y.seed <- floor((yy[1] %% 1)*1000)+floor((yy[2] %% 1)*1000)+floor((yy[3] %% 1)*1000)
+    x.seed <- seedDS.o(x)
+    y.seed <- seedDS.o(y)
     
     set.seed(x.seed)
-    x.new <- x + stats::rnorm(N.data, mean=0, sd=sqrt(0.1*stats::var(x)))
+    x.new <- x + stats::rnorm(N.data, mean=0, sd=sqrt(percentage*stats::var(x)))
     set.seed(y.seed)
-    y.new <- y + stats::rnorm(N.data, mean=0, sd=sqrt(0.1*stats::var(y)))
+    y.new <- y + stats::rnorm(N.data, mean=0, sd=sqrt(percentage*stats::var(y)))
     
   }
   
@@ -120,4 +131,3 @@ nfilter.kNN <- as.numeric(thr$nfilter.kNN)                  #
 }
 # AGGREGATE FUNCTION
 # scatterPlotDS.o
-
