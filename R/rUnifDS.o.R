@@ -29,7 +29,7 @@
 #' also returns a vector reporting the length of the pseudorandom vector
 #' created in each source.
 #' @author Paul Burton for DataSHIELD Development Team
-#' export
+#' @export
 rUnifDS.o<-function (n, min = 0, max = 1, force.output.to.k.decimal.places=9){ 
 
 #If min or max are defined by serverside vectors
@@ -45,7 +45,7 @@ rUnifDS.o<-function (n, min = 0, max = 1, force.output.to.k.decimal.places=9){
 	max<-eval(parse(text=command.text))
 	}
 		
-	random.number.vector<-runif(n, min=min, max=max)
+	random.number.vector<-stats::runif(n, min=min, max=max)
 	
 	if(force.output.to.k.decimal.places<9){
 	random.number.vector<-round(random.number.vector,force.output.to.k.decimal.places)

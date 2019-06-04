@@ -18,7 +18,7 @@ rilmDS.b <- function (..., yvar){
 
   # create a data frame for the variables and remove any rows that include NAs
   data.table <- cbind.data.frame(...)
-  data.complete <- complete.cases(data.table)
+  data.complete <- stats::complete.cases(data.table)
   data.table.no.miss <- data.table[data.complete,]
 
   # Calculate the length "N.sub" of a variable vector after removing NAs and the number of covariates "N.xvar" 	

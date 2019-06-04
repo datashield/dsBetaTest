@@ -29,7 +29,7 @@
 #' also returns a vector reporting the length of the pseudorandom vector
 #' created in each source.
 #' @author Paul Burton for DataSHIELD Development Team
-#' export
+#' @export
 rNormDS.o<-function (n, mean = 0, sd = 1, force.output.to.k.decimal.places=9){ 
 
 #If mean or sd are defined by serverside vectors
@@ -45,7 +45,7 @@ rNormDS.o<-function (n, mean = 0, sd = 1, force.output.to.k.decimal.places=9){
 	sd<-eval(parse(text=command.text))
 	}
 
-	random.number.vector<-rnorm(n, mean=mean, sd=sd)
+	random.number.vector<-stats::rnorm(n, mean=mean, sd=sd)
 	
 	if(force.output.to.k.decimal.places<9){
 	random.number.vector<-round(random.number.vector,force.output.to.k.decimal.places)

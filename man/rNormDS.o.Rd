@@ -48,5 +48,4 @@ the function rnorm() in native R and its arguments are the same.
 }
 \author{
 Paul Burton for DataSHIELD Development Team
-export
 }

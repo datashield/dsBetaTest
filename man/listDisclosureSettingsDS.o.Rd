@@ -14,5 +14,5 @@ ds.listDisclosureSettings
 For more details see the extensive header for ds.listDisclosureSettings
 }
 \author{
-Paul Burton
+Paul Burton, Demetris Avraam for DataSHIELD Development Team
 }

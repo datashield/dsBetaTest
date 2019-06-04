@@ -4,28 +4,30 @@
 \alias{tapplyDS.o}
 \title{tapplyDS.o called by ds.tapply.o}
 \usage{
-tapplyDS.o(X.name, INDEX.names, FUN.name)
+tapplyDS.o(X.name, INDEX.names.transmit, FUN.name)
 }
 \arguments{
-\item{X.name, }{the name of the variable to be summarized. The user must set the name as a
-character string in inverted commas}
+\item{X.name, }{the name of the variable to be summarized. Specified
+via argument <X.name> of {ds.tapply.o} function}
 
-\item{INDEX.names, }{the name of a single factor or a list of factors to index the variable 
-to be summarized. The user must specify this argument in inverted commas.}
+\item{INDEX.names.transmit, }{the name of a single factor or a vector of names of factors to
+index the variable to be summarized. Specified via argument <INDEX.names>
+of {ds.tapply.o} function}
 
-\item{FUN.name, }{the name of a valid function to be applied. The present version of the tapplyDS.o
-function allows the user to choose one of the four main summarizing functions that are the 'mean',
-the 'sd', the 'sum', and the 'quantile'.}
+\item{FUN.name, }{the name of one of the allowable summarizing functions to be applied.
+Specified via argument <FUN.name> of {ds.tapply.o} function.}
 }
 \value{
-an array will be returned to the clientside
+an array of the summarized values created by the tapplyDS.o function. This array
+is returned to the clientside. It has the same number of dimensions as INDEX.
 }
 \description{
-An aggregate serverside function that applies a function over a ragged array.
+Apply one of a selected range of functions to summarize an
+outcome variable over one or more indexing factors and write the resultant
+summary to the clientside
 }
 \details{
-An aggregate function that uses the native R function tapply() to summarize a variable
-over one or more factors
+see details for {ds.tapply.o} function
 }
 \author{
 Paul Burton, Demetris Avraam for DataSHIELD Development Team

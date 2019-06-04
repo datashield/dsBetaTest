@@ -4,29 +4,30 @@
 \alias{tapplyDS.assign.o}
 \title{tapplyDS.assign.o called by ds.tapply.assign.o}
 \usage{
-tapplyDS.assign.o(X.name, INDEX.names, FUN.name)
+tapplyDS.assign.o(X.name, INDEX.names.transmit, FUN.name)
 }
 \arguments{
-\item{X.name, }{the name of the variable to be summarized. The user must set the name as a
-character string in inverted commas}
+\item{X.name, }{the name of the variable to be summarized. Specified
+via argument <X.name> of {ds.tapply.assign.o} function}
 
-\item{INDEX.names, }{the name of a single factor or a list of factors to index the variable 
-to be summarized. The user must specify this argument in inverted commas.}
+\item{INDEX.names.transmit, }{the name of a single factor or a vector of names of factors to
+index the variable to be summarized. Specified via argument <INDEX.names>
+of {ds.tapply.assign.o} function}
 
-\item{FUN.name, }{the name of a valid function to be applied. The present version of this
-function allows the user to choose one of the four main summarizing functions that are 'mean',
-'sd', 'sum', or 'quantile'.}
+\item{FUN.name, }{the name of one of the allowable summarizing functions to be applied.
+Specified via argument <FUN.name> of {ds.tapply.assign.o} function.}
 }
 \value{
-an array will be created on the serverside and named according to the
-\code{newobj} argument of the clientside function ds.tapply.assign.o()
+an array of the summarized values created by the {tapplyDS.assign.o} function. This
+array is written as a newobj on the serverside. It has the same number of dimensions as INDEX.
 }
 \description{
-An assign serverside function that applies a function over a ragged array.
+Apply one of a selected range of functions to summarize an
+outcome variable over one or more indexing factors and write the resultant
+summary as a newobj on the serverside
 }
 \details{
-An assign function that uses the native R function tapply() to summarize a variable
-over one or more factors
+see details for {ds.tapply.assign.o} function
 }
 \author{
 Paul Burton, Demetris Avraam for DataSHIELD Development Team

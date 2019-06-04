@@ -13,12 +13,12 @@
 meanSdGpDS <- function (X, INDEX){
   
   FUN.mean <- function(x) {mean(x,na.rm=TRUE)}
-  FUN.var <- function(x)  {var(x,na.rm=TRUE)}
+  FUN.var <- function(x)  {stats::var(x,na.rm=TRUE)}
   
   #Strip missings from both X and INDEX
   analysis.matrix<-cbind(X,INDEX)
   
-  data.complete<-complete.cases(analysis.matrix)
+  data.complete<-stats::complete.cases(analysis.matrix)
   
   Ntotal<-dim(analysis.matrix)[1]
   Nmissing<-sum(!data.complete)

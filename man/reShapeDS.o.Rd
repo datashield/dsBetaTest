@@ -2,46 +2,64 @@
 % Please edit documentation in R/reShapeDS.o.R
 \name{reShapeDS.o}
 \alias{reShapeDS.o}
-\title{reShapeDS.o called by ds.reShape.o}
+\title{reShapeDS.o (assign function) called by ds.reShape.o}
 \usage{
 reShapeDS.o(data.name, varying.transmit, v.names.transmit, timevar.name,
   idvar.name, drop.transmit, direction, sep)
 }
 \arguments{
-\item{data.name, }{the name of the data frame.}
+\item{data.name, }{the name of the data.frame to be reshaped. Specified
+via argument <data.name> of {ds.reShape.o} function}
 
-\item{varying.transmit, }{names of sets of variables in the wide format that correspond to single
-variables in long format (‘time-varying’).}
+\item{varying.transmit, }{names of sets of variables in the wide format that
+correspond to single variables in long format (typically what may be called
+'time-varying' or 'time-dependent' variables). Specified
+via argument <varying> of {ds.reShape.o} function.}
 
-\item{v.names.transmit, }{the names of variables in the long format that correspond to multiple variables
-in the wide format}
+\item{v.names.transmit, }{the names of variables in the long format that correspond
+to multiple variables
+in the wide format - for example, sbp7, sbp11, sbp15 (measured systolic blood pressure
+at ages 7, 11 and 15 years). Specified
+via argument <v.names> of {ds.reShape.o} function}
 
-\item{timevar.name, }{the name of the variable in long format that differentiates multiple records from the same
-group or individual. If more than one record matches, the first will be taken}
+\item{timevar.name, }{the variable in long format that differentiates multiple records
+from the same group or individual. Specified
+via argument <timevar.name> of {ds.reShape.o} function}
 
-\item{idvar.name, }{Names of one or more variables in long format that identify multiple records from
-the same group/individual. These variables may also be present in wide format.}
+\item{idvar.name, }{names of one or more variables in long format that identify
+multiple records from
+the same group/individual. This/these variable(s) may also be present in wide format.
+Specified via argument <idvar.name> of {ds.reShape.o} function}
 
-\item{drop.transmit, }{a vector of names of variables to drop before reshaping.}
+\item{drop.transmit, }{a vector of names of variables to drop before reshaping. Specified
+via argument <drop> of {ds.reShape.o} function}
 
-\item{direction, }{a character string, matched to either "wide" to reshape to wide 
-format, or "long" to reshape to long format.}
+\item{direction, }{a character string, partially matched to either "wide" to reshape from 
+long to wide format, or "long" to reshape from wide to long format. Specified
+via argument <direction> of {ds.reShape.o} function}
 
 \item{sep, }{a character vector of length 1, indicating a separating character in the variable
-names in the wide format. This is used for guessing v.names and times arguments based on the
-names in varying. This is also used to create variable names when reshaping to wide format.}
+names in the wide format. Specified
+via argument <sep> of {ds.reShape.o} function}
 }
 \value{
-a dataframe will be created on the serverside and named according to the \code{newobj} argument of the
-clientside function ds.reShape.o()
+a reshaped data.frame converted from long to wide format or from wide to
+long format which is written to the serverside and given the name provided as the
+<newobj> argument of {ds.reShape.o} or 'newObject' if no name is specified.
+In addition, two validity messages are returned to the clientside
+indicating whether <newobj> has been created in each data source and if so whether
+it is in a valid form (see header for {ds.reShape.o}.
 }
 \description{
-An assign serverside function that reshapes a given data frame between wide and long formats.
+Reshapes a data frame containing longitudinal or
+otherwise grouped data from 'wide' to 'long' format or vice-versa
 }
 \details{
-This function reshapes a data frame between ‘wide’ format with repeated
-measurements in separate columns of the same record and ‘long’ format with the repeated
-measurements in separate records and assign it at the servers.
+This function is based on the native R function \code{reshape}.
+It reshapes a data frame containing longitudinal or otherwise grouped data
+between 'wide' format with repeated
+measurements in separate columns of the same record and 'long' format with the repeated
+measurements in separate records. The reshaping can be in either direction
 }
 \author{
 Demetris Avraam, Paul Burton for DataSHIELD Development Team

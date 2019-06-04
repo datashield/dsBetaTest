@@ -113,7 +113,7 @@ BooleDS.o <- function(V1.name=NULL, V2.name=NULL, Boolean.operator.n=NULL, na.as
   outobj.invalid <- 0
 
   unique.values.outobj <- unique(outobj)
-  unique.values.noNA.outobj <- unique.values.outobj[complete.cases(unique.values.outobj)]
+  unique.values.noNA.outobj <- unique.values.outobj[stats::complete.cases(unique.values.outobj)]
 
   #Boolean and can therefore only be binary so check this:
   if(length(unique.values.noNA.outobj)>2) outobj.invalid <- 1
