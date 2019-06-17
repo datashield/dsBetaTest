@@ -38,6 +38,7 @@ AggregateMethods: meanSdGpDS,
     varDS.o,
     lengthDS.o,
     scatterPlotDS.o,
+    table2DDS.o,
     matrixDetDS1,
     histogramDS.o
 AssignMethods: lexisDS2.o,
