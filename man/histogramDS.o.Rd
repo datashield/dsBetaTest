@@ -22,7 +22,7 @@ a list with an object of class \code{histogram} and the number of invalid cells
 This function produces the information required to plot
 a histogram. This is done without allowing for bins (cells) with number
 of counts less than the pre-specified disclosure control set for the minimum cell
-size of a table. If a bin has less counts than this threshold then their counts 
+size of a table. If a bin has less counts than this threshold then their counts
 and its density are replaced by a 0 value.
 }
 \author{
