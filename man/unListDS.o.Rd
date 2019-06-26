@@ -12,9 +12,11 @@ class list. It must be specified in inverted commas. But this argument is
 usually specified directly by <x.name> argument of the clientside function
 {ds.unList.o}}
 
-\item{recursive}{logical. Should unlisting be applied to list components of x.name}
+\item{recursive}{argument required for native R unlist function - see
+native R help for {unlist} function}
 
-\item{newobj}{created object}
+\item{newobj}{is the object hard assigned '<<-' to be the output of the
+function written to the serverside}
 }
 \value{
 the object specified by the <newobj> argument (or its default name
