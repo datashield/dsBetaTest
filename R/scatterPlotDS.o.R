@@ -51,9 +51,6 @@ scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
 
   if(method.indicator==1){
 
-  # Load the RANN package to use the 'nn2' function that searches for the Nearest Neighbours  
-  library(RANN)
-  
   # standardise the variables
   x.standardised <- (x-mean(x))/stats::sd(x)
   y.standardised <- (y-mean(y))/stats::sd(y)

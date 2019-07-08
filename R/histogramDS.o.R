@@ -74,9 +74,6 @@ histogramDS.o <- function (xvect, num.breaks, method.indicator, k, noise){
 
   if(method.indicator==2){
 
-    # Load the RANN package to use the 'nn2' function that searches for the Nearest Neighbours
-    library(RANN)
-
     # Remove any missing values
     x <- stats::na.omit(xvect)
 
