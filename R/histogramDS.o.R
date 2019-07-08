@@ -37,10 +37,9 @@ histogramDS.o <- function (xvect, num.breaks, method.indicator, k, noise){
 
   if (method.indicator==1){
 
-    # generate a number based on the input variable that will be used as a fixed random number
-    # generator
-    x.seed <- seedDS.o(xvect)
-    set.seed(x.seed)
+    # the study-specific seed for random number generation
+    seed <- getOption("datashield.seed")
+    set.seed(seed)
 
     rr <- c(min(xvect, na.rm=TRUE), max(xvect, na.rm=TRUE))
     if(rr[1] < 0){ min <- rr[1] * stats::runif(1, 1.01, 1.05) }else{ min <- rr[1] * stats::runif(1, 0.95, 0.99) }
@@ -146,10 +145,9 @@ histogramDS.o <- function (xvect, num.breaks, method.indicator, k, noise){
       percentage <- noise
     }
 
-    # generate a number based on the input variable that will be used as a fixed random number
-    # generator
-    x.seed <- seedDS.o(x)
-    set.seed(x.seed)
+    # the study-specific seed for random number generation
+    seed <- getOption("datashield.seed")
+    set.seed(seed)
 
     # generate the noise-augmented vector
     x.new <- x + stats::rnorm(N.data, mean=0, sd=sqrt(percentage*stats::var(x)))

@@ -1,6 +1,6 @@
 Package: dsBetaTest
 Title: New DataSHIELD Server Functions
-Version: 0.4.4
+Version: 0.5.0
 Author: DataSHIELD Developers <datashield@newcastle.ac.uk>
 Maintainer: DataSHIELD Developers <datashield@newcastle.ac.uk>
 Description: Beta versions of new DataSHIELD server functions. Collected in this
