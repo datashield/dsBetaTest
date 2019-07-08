@@ -11,9 +11,16 @@ histogramDS.o(xvect, num.breaks, method.indicator, k, noise)
 
 \item{num.breaks}{the number of breaks that the range of the variable is divided.}
 
-\item{min}{a numeric, the lower limit of the distribution.}
+\item{method.indicator}{a number equal to either 1, 2 or 3 indicating the method of disclosure
+control that is used for the generation of the histogram. If the value is equal to 1 then the
+'smallCellsRule' is used. If the value is equal to 2 then the 'deterministic' method is used.
+If the value is set to 3 then the 'probabilistic' method is used.}
 
-\item{max}{a numeric, the upper limit of the distribution.}
+\item{k}{the number of the nearest neghbours for which their centroid is calculated if the
+\code{method.indicator} is equal to 2 (i.e. deterministic method).}
+
+\item{noise}{the percentage of the initial variance that is used as the variance of the embedded
+noise if the \code{method.indicator} is equal to 3 (i.e. probabilistic method).}
 }
 \value{
 a list with an object of class \code{histogram} and the number of invalid cells
@@ -24,6 +31,9 @@ a histogram. This is done without allowing for bins (cells) with number
 of counts less than the pre-specified disclosure control set for the minimum cell
 size of a table. If a bin has less counts than this threshold then their counts
 and its density are replaced by a 0 value.
+}
+\details{
+Please find more details in the documentation of the clientside ds.histogram function.
 }
 \author{
 Amadou Gaye, Demetris Avraam for DataSHIELD Development Team
