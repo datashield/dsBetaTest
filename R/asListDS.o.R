@@ -23,23 +23,23 @@
 #' @export
 asListDS.o <- function (x.name,newobj){
 
-if(is.character(x.name)){
-	active.text<-paste0(newobj,"<<-as.list(",x.name,")")
-	eval(parse(text=active.text))
+    newobj.class <- NULL
+    if(is.character(x.name)){
+        active.text<-paste0(newobj,"<<-as.list(",x.name,")")
+        eval(parse(text=active.text))
 
-	active.text2<-paste0("newobj.class<-class(",newobj,")")
-	eval(parse(text=active.text2))
+        active.text2<-paste0("newobj.class<-class(",newobj,")")
+        eval(parse(text=active.text2))
 
-	}else{
-   studysideMessage<-"ERROR: x.name must be specified as a character string"
-   return(list(studysideMessage=studysideMessage))
-   } 
+    }else{
+        studysideMessage<-"ERROR: x.name must be specified as a character string"
+        return(list(studysideMessage=studysideMessage))
+    }
 
-return.message<-paste0("New object <",newobj,"> created")
-object.class.text<-paste0("Class of <",newobj,"> is '",newobj.class,"'")
+    return.message<-paste0("New object <",newobj,"> created")
+    object.class.text<-paste0("Class of <",newobj,"> is '",newobj.class,"'")
 
-
-  return(list(return.message=return.message,class.of.newobj=object.class.text))
+    return(list(return.message=return.message,class.of.newobj=object.class.text))
 }
 #AGGEGATE FUNCTION
 # asListDS.o

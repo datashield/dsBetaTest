@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^azure-pipelines\.yml$
+^azure-pipelines_check\.Rout$
 ^azure-pipelines\.R$
 ^azure-pipelines\.Rout$
