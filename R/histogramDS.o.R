@@ -5,10 +5,17 @@
 #' of counts less than the pre-specified disclosure control set for the minimum cell
 #' size of a table. If a bin has less counts than this threshold then their counts
 #' and its density are replaced by a 0 value.
+#' @details Please find more details in the documentation of the clientside ds.histogram function.
 #' @param xvect the numeric vector for which the histogram is desired.
-#' @param min a numeric, the lower limit of the distribution.
-#' @param max a numeric, the upper limit of the distribution.
 #' @param num.breaks the number of breaks that the range of the variable is divided.
+#' @param method.indicator a number equal to either 1, 2 or 3 indicating the method of disclosure
+#' control that is used for the generation of the histogram. If the value is equal to 1 then the
+#' 'smallCellsRule' is used. If the value is equal to 2 then the 'deterministic' method is used.
+#' If the value is set to 3 then the 'probabilistic' method is used.
+#' @param k the number of the nearest neghbours for which their centroid is calculated if the
+#' \code{method.indicator} is equal to 2 (i.e. deterministic method).
+#' @param noise the percentage of the initial variance that is used as the variance of the embedded
+#' noise if the \code{method.indicator} is equal to 3 (i.e. probabilistic method).
 #' @return a list with an object of class \code{histogram} and the number of invalid cells
 #' @export
 #' @author Amadou Gaye, Demetris Avraam for DataSHIELD Development Team
@@ -30,10 +37,9 @@ histogramDS.o <- function (xvect, num.breaks, method.indicator, k, noise){
 
   if (method.indicator==1){
 
-    # generate a number based on the input variable that will be used as a fixed random number
-    # generator
-    x.seed <- seedDS.o(xvect)
-    set.seed(x.seed)
+    # the study-specific seed for random number generation
+    seed <- getOption("datashield.seed")
+    set.seed(seed)
 
     rr <- c(min(xvect, na.rm=TRUE), max(xvect, na.rm=TRUE))
     if(rr[1] < 0){ min <- rr[1] * stats::runif(1, 1.01, 1.05) }else{ min <- rr[1] * stats::runif(1, 0.95, 0.99) }
@@ -142,10 +148,9 @@ histogramDS.o <- function (xvect, num.breaks, method.indicator, k, noise){
       percentage <- noise
     }
 
-    # generate a number based on the input variable that will be used as a fixed random number
-    # generator
-    x.seed <- seedDS.o(x)
-    set.seed(x.seed)
+    # the study-specific seed for random number generation
+    seed <- getOption("datashield.seed")
+    set.seed(seed)
 
     # generate the noise-augmented vector
     x.new <- x + stats::rnorm(N.data, mean=0, sd=sqrt(percentage*stats::var(x)))
