@@ -98,7 +98,7 @@ for(k in 1:num.factors){
  ##################
  #disclosure traps#
  ##################
-    N.count <- tapply(X.complete,INDEX,length)
+    N.count <- tapply(X.complete,INDEX,base::length)
 	
    if(min(N.count)<nfilter.tab && min(N.count) > 0){
    return.message<-"ERROR: at least one group defined by INDEX has < nfilter.tab members. The output cannot therefore be returned to the clientside. But the function ds.tapply.assign.o may still be used to write the output to the data servers with no clientside return"
@@ -117,8 +117,8 @@ for(k in 1:num.factors){
   ###MEAN
    if(FUN.name=="mean" || FUN.name=="Mean" || FUN.name=="MEAN"){
 
-   Mean <- tapply(X.complete,INDEX,mean)
-   N.count <- tapply(X.complete,INDEX,length)
+   Mean <- tapply(X.complete,INDEX,base::mean)
+   N.count <- tapply(X.complete,INDEX,base::length)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
@@ -171,8 +171,8 @@ for(k in 1:num.factors){
    ###SD
    if(FUN.name=="sd" || FUN.name=="SD"){
 
-   SD <- tapply(X.complete,INDEX,sd)
-   N.count <- tapply(X.complete,INDEX,length)
+   SD <- tapply(X.complete,INDEX,stats::sd)
+   N.count <- tapply(X.complete,INDEX,base::length)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
@@ -225,8 +225,8 @@ for(k in 1:num.factors){
  
    ###SUM
   if(FUN.name=="sum" || FUN.name=="Sum" || FUN.name=="SUM"){
-   Sum <- tapply(X.complete,INDEX,sum)
-   N.count <- tapply(X.complete,INDEX,length)
+   Sum <- tapply(X.complete,INDEX,stats::sum)
+   N.count <- tapply(X.complete,INDEX,base::length)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
@@ -285,8 +285,8 @@ for(k in 1:num.factors){
 	return(return.message)
 	}
   probs.vector <- c(0.05,0.1,0.2,0.25,0.3,0.33,0.4,0.5,0.6,0.67,0.7,0.75,0.8,0.9,0.95)
-  Quantile <- tapply(X.complete,INDEX,quantile, probs=probs.vector)
-  N.count <- tapply(X.complete,INDEX,length)
+  Quantile <- tapply(X.complete,INDEX,stats::quantile, probs=probs.vector)
+  N.count <- tapply(X.complete,INDEX,base::length)
 
 
  #output<-list(Quantile=Quantile,N=N.count)
