@@ -51,9 +51,6 @@ scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
 
   if(method.indicator==1){
 
-  # Load the RANN package to use the 'nn2' function that searches for the Nearest Neighbours  
-  library(RANN)
-  
   # standardise the variables
   x.standardised <- (x-mean(x))/stats::sd(x)
   y.standardised <- (y-mean(y))/stats::sd(y)
@@ -94,17 +91,17 @@ scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
   # Shift the centroids back to the actual position and scale of the original data
   x.new <- (x.masked * stats::sd(x)) + mean(x)
   y.new <- (y.masked * stats::sd(y)) + mean(y)
-  
+
   }
 
   if (method.indicator==2){
-    
+
     # Create a data.frame for the variables
     data <- data.frame(x, y)
-    
+
     # Calculate the length of the data.frame after ommitting any rows with NAs 
     N.data <- dim(data)[1]
-    
+
     # Check if the percentage of the variance that is specified in the argument 'noise'
     # and is used as the variance of the embedded noise is a greater
     # than the minimum threshold specified in the filter 'nfilter.noise'
@@ -114,13 +111,12 @@ scatterPlotDS.o <- function(x, y, method.indicator, k, noise){
       percentage <- noise
     }
 
-    # generate a number based on the specific data that will be used as a fixed random number generator
-    x.seed <- seedDS.o(x)
-    y.seed <- seedDS.o(y)
-    
-    set.seed(x.seed)
+    # the study-specific seed for random number generation
+    seed <- getOption("datashield.seed")
+    if (is.null(seed))
+        stop("scatterPlotDS.o requires Opal 2.14 or higher to operate", call.=FALSE)
+    set.seed(seed)
     x.new <- x + stats::rnorm(N.data, mean=0, sd=sqrt(percentage*stats::var(x)))
-    set.seed(y.seed)
     y.new <- y + stats::rnorm(N.data, mean=0, sd=sqrt(percentage*stats::var(y)))
     
   }
