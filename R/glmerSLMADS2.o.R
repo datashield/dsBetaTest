@@ -4,7 +4,7 @@
 #' @details It is a function
 #' @import lme4
 #' @export
-glmeSLMADS2.o <- function(formula, family, offset, weights, dataName){
+glmerSLMADS2.o <- function(formula, family, offset, weights, dataName){
   
   #############################################################
   #MODULE 1: CAPTURE THE nfilter SETTINGS
@@ -130,4 +130,4 @@ glmeSLMADS2.o <- function(formula, family, offset, weights, dataName){
   
 }
 # AGGREGATE FUNCTION
-# glmeSLMADS2.o
+# glmerSLMADS2.o

@@ -126,12 +126,18 @@ nfilter.glm <- as.numeric(thr$nfilter.glm)
     cbindtext.offset <- paste0("cbind(", offset,")")
     offset <- eval(parse(text=cbindtext.offset), envir = parent.frame())
   }
+  else{
+    assign(x = 'offset', value = NULL, envir = parent.frame())
+  }
 
   varname.weights<-paste0(weights)
 
   if(!(is.null(weights))){
     cbindtext.weights <- paste0("cbind(", weights,")")
     weights <- eval(parse(text=cbindtext.weights), envir = parent.frame())
+  }
+  else{
+    assign(x = 'weights', value = NULL, envir = parent.frame())
   }
 
   ##################################################################
