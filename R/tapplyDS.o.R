@@ -225,7 +225,7 @@ for(k in 1:num.factors){
  
    ###SUM
   if(FUN.name=="sum" || FUN.name=="Sum" || FUN.name=="SUM"){
-   Sum <- tapply(X.complete,INDEX,stats::sum)
+   Sum <- tapply(X.complete,INDEX,base::sum)
    N.count <- tapply(X.complete,INDEX,base::length)
 
    #make output neat if up to two INDEX factors
