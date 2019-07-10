@@ -106,8 +106,8 @@ for(k in 1:num.factors){
   ###MEAN
    if(FUN.name=="mean" || FUN.name=="Mean" || FUN.name=="MEAN"){
 
-   Mean <- tapply(X.complete,INDEX,mean)
- #  N.count <- tapply(X.complete,INDEX,length)
+   Mean <- tapply(X.complete,INDEX,base::mean)
+ #  N.count <- tapply(X.complete,INDEX,base::length)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
@@ -158,7 +158,7 @@ for(k in 1:num.factors){
    ###N
    if(FUN.name=="N" || FUN.name=="n"|| FUN.name=="length"|| FUN.name=="Length"|| FUN.name=="LENGTH"){
 
-   N.count <- tapply(X.complete,INDEX,length)
+   N.count <- tapply(X.complete,INDEX,base::length)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
@@ -207,7 +207,7 @@ for(k in 1:num.factors){
    ###SD
    if(FUN.name=="sd" || FUN.name=="SD"){
 
-   SD <- tapply(X.complete,INDEX,sd)
+   SD <- tapply(X.complete,INDEX,stats::sd)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
@@ -255,7 +255,7 @@ for(k in 1:num.factors){
  
    ###SUM
   if(FUN.name=="sum" || FUN.name=="Sum" || FUN.name=="SUM"){
-   Sum <- tapply(X.complete,INDEX,sum)
+   Sum <- tapply(X.complete,INDEX,base::sum)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
@@ -311,8 +311,8 @@ for(k in 1:num.factors){
      return(list(studysideMessage=studysideMessage))
 	}
   probs.vector <- c(0.05,0.1,0.2,0.25,0.3,0.33,0.4,0.5,0.6,0.67,0.7,0.75,0.8,0.9,0.95)
-  Quantile <- tapply(X.complete,INDEX,quantile, probs=probs.vector)
-  N.count <- tapply(X.complete,INDEX,length)
+  Quantile <- tapply(X.complete,INDEX,stats::quantile, probs=probs.vector)
+  N.count <- tapply(X.complete,INDEX,base::length)
 
 
  output<-list(Quantile=Quantile)
