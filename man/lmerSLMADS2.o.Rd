@@ -4,7 +4,7 @@
 \alias{lmerSLMADS2.o}
 \title{lmeSLMADS2.o}
 \usage{
-lmerSLMADS2.o(formula, offset, weights, dataName)
+lmerSLMADS2.o(formula, offset, weights, dataName, REML = TRUE)
 }
 \description{
 This is the second serverside function called by ds.glmSLMA.o.

@@ -4,7 +4,7 @@
 #' @details It is a function
 #' @import lme4
 #' @export
-lmerSLMADS2.o <- function(formula, offset, weights, dataName){
+lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   
   errorMessage <- "No errors"
   
@@ -129,7 +129,6 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName){
   
   mod.glm.ds <- stats::glm(formula2use.glm, family="gaussian", x=TRUE, control=stats::glm.control(maxit=1), contrasts=NULL, data=dataDF)
   
-  
   X.mat <- as.matrix(mod.glm.ds$x)
   
   dimX <- dim((X.mat))
@@ -236,28 +235,22 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName){
     mg<-NA
   }
   
-  
+
   ##################################################################
 
   if(disclosure.risk==0){
-    mg <- lmer(formula2use, offset=offset, weights=weights, data=dataDF)
+    mg <- lmer(formula2use, offset=offset, weights=weights, data=dataDF, REML = REML)
+    # outlist = list(call=summary(mg)$call, AICtab=summary(mg)$AICtab, coefficients=summary(mg)$coefficients, random.effects=summary(mg)$varcor, cov.scaled = summary(mg)$vcov,
+    #                data=dataName, Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing, ngrps = summary(mg)$ngrps,offset=varname.offset, weights=varname.weights, REML=REML
+    #                )
+    outlist = list(call=summary(mg)$call, AICtab=summary(mg)$AICtab, REML=mg@devcomp$cmp[7], coefficients=summary(mg)$coefficients, RE=summary(mg)$varcor, data=dataName,
+                   Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing, cov.scaled=summary(mg)$vcov, ngrps = summary(mg)$ngrps,offset=varname.offset, weights=varname.weights,
+                   errorMessage = errorMessage, disclosure.risk = disclosure.risk)
   }
-# 
-#   outlist<-list(rank=mg$rank, aic=mg$aic, 
-#                 iter=mg$iter, converged=mg$converged,
-#                 boundary=mg$boundary, na.action=options("na.action"), call=summary(mg)$call, terms=summary(mg)$terms,
-#                 contrasts=summary(mg)$contrasts, aliased=summary(mg)$aliased, dispersion=summary(mg)$dispersion,
-#                 data=dataName, df=summary(mg)$df, Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing,
-#                 cov.unscaled=summary(mg)$cov.unscaled, cov.scaled=summary(mg)$cov.scaled,
-#                 offset=varname.offset, weights=varname.weights,VarCovMatrix=NA,CorrMatrix=NA,
-#                 deviance.null=mg$null.deviance, df.null=mg$df.null, deviance.resid=mg$deviance, df.resid=mg$df.residual,
-#                 formula=mg$formula, family=mg$family,coefficients=summary(mg)$coefficients)
+  else {
+    outlist = list(errorMessage = errorMessage, disclosure.risk = disclosure.risk)
+  }
 
-  #outlist = summary(mg)
-  
-  outlist = list(call=summary(mg)$call, AICtab=summary(mg)$AICtab, REML=mg@devcomp$cmp[7], coefficients=summary(mg)$coefficients, RE=summary(mg)$varcor, data=dataName,
-                 Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing, cov.scaled=summary(mg)$vcov, ngrps = summary(mg)$ngrps,offset=varname.offset, weights=varname.weights,
-                 errorMessage = errorMessage)
 
   return(outlist)
   
