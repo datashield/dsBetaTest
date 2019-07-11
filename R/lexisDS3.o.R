@@ -13,7 +13,10 @@
 #'
 lexisDS3.o <- function(){
 
-  outobj <- data.frame(messageobj$expanded.table)
+  if (base::exists(messageobj))
+      outobj <- data.frame(messageobj$expanded.table)
+  else
+      outobj <- NULL
 
   return(outobj)
 
