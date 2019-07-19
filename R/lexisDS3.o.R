@@ -13,7 +13,7 @@
 #'
 lexisDS3.o <- function(){
 
-  outobj <- data.frame(messageobj$expanded.table)
+  outobj <- data.frame(base::get("messageobj")$expanded.table)
 
   return(outobj)
 

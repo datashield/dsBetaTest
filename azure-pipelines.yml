@@ -9,17 +9,17 @@ steps:
     sudo apt-get update
     sudo apt-get install -qq libxml2-dev libcurl4-openssl-dev libssl-dev -y
     sudo apt-get install -qq r-base -y
-    sudo R -e "install.packages('devtools', dependencies=TRUE)"
-    sudo R -e "install.packages('RANN', dependencies=TRUE)"
+    sudo R -q -e "install.packages('devtools', dependencies=TRUE)"
+    sudo R -q -e "install.packages('RANN', dependencies=TRUE)"
 
-    sudo R -e "devtools::install_github(repo='datashield/dsBase', ref='master')"
-    sudo R -e "devtools::install_github(repo='datashield/dsStats', ref='master')"
-    sudo R -e "devtools::install_github(repo='datashield/dsGraphics', ref='master')"
-    sudo R -e "devtools::install_github(repo='datashield/dsModelling', ref='master')"
+    sudo R -q -e "devtools::install_github(repo='datashield/dsBase', ref='master')"
+    sudo R -q -e "devtools::install_github(repo='datashield/dsStats', ref='master')"
+    sudo R -q -e "devtools::install_github(repo='datashield/dsGraphics', ref='master')"
+    sudo R -q -e "devtools::install_github(repo='datashield/dsModelling', ref='master')"
   displayName: 'Install R Client'
 
 - bash: |
-    R -e "library('devtools'); devtools::check(args = c('--no-examples'))" | tee azure-pipelines_check.Rout
-    grep --quiet "^0 error" azure-pipelines_check.Rout && grep --quiet " 0 warnings" azure-pipelines_check.Rout
+    R -q -e "library('devtools'); devtools::check(args = c('--no-examples'))" | tee azure-pipelines_check.Rout
+    grep --quiet "^0 errors" azure-pipelines_check.Rout && grep --quiet " 0 warnings" azure-pipelines_check.Rout && grep --quiet " 0 notes" azure-pipelines_check.Rout
   displayName: 'Devtools checks'
   condition: always()

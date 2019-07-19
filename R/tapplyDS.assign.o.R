@@ -71,7 +71,7 @@ return(list(studysideMessage=studysideMessage))
 #select complete cases on X and all INDEX factors only
 all.complete<-stats::complete.cases(X)
 
-
+current.factor <- NA
 for(j in 1:num.factors){
 
 activation.text.a<-paste0("current.factor <-",INDEX.factors[j])
@@ -106,12 +106,13 @@ for(k in 1:num.factors){
   ###MEAN
    if(FUN.name=="mean" || FUN.name=="Mean" || FUN.name=="MEAN"){
 
-   Mean <- tapply(X.complete,INDEX,mean)
- #  N.count <- tapply(X.complete,INDEX,length)
+   Mean <- tapply(X.complete,INDEX,base::mean)
+ #  N.count <- tapply(X.complete,INDEX,base::length)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
-		
+
+		factor1.levels <- NA
 		activation.text.e<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.e))
 		
@@ -125,9 +126,11 @@ for(k in 1:num.factors){
 
 		if(num.factors==2){
 		
+		factor1.levels <- NA
 		activation.text.f<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.f))
 
+		factor2.levels <- NA
 		activation.text.g<-paste0("factor2.levels<-levels(",INDEX.factors[2],")")
 		eval(parse(text=activation.text.g))
 		
@@ -158,11 +161,12 @@ for(k in 1:num.factors){
    ###N
    if(FUN.name=="N" || FUN.name=="n"|| FUN.name=="length"|| FUN.name=="Length"|| FUN.name=="LENGTH"){
 
-   N.count <- tapply(X.complete,INDEX,length)
+   N.count <- tapply(X.complete,INDEX,base::length)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
 		
+		factor1.levels <- NA
 		activation.text.e<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.e))
 		
@@ -176,9 +180,11 @@ for(k in 1:num.factors){
 
 		if(num.factors==2){
 		
+		factor1.levels <- NA
 		activation.text.f<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.f))
 
+		factor2.levels <- NA
 		activation.text.g<-paste0("factor2.levels<-levels(",INDEX.factors[2],")")
 		eval(parse(text=activation.text.g))
 		
@@ -207,11 +213,12 @@ for(k in 1:num.factors){
    ###SD
    if(FUN.name=="sd" || FUN.name=="SD"){
 
-   SD <- tapply(X.complete,INDEX,sd)
+   SD <- tapply(X.complete,INDEX,stats::sd)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
 		
+		factor1.levels <- NA
 		activation.text.e<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.e))
 		
@@ -225,9 +232,11 @@ for(k in 1:num.factors){
 
 		if(num.factors==2){
 		
+		factor1.levels <- NA
 		activation.text.f<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.f))
 
+		factor2.levels <- NA
 		activation.text.g<-paste0("factor2.levels<-levels(",INDEX.factors[2],")")
 		eval(parse(text=activation.text.g))
 		
@@ -255,11 +264,12 @@ for(k in 1:num.factors){
  
    ###SUM
   if(FUN.name=="sum" || FUN.name=="Sum" || FUN.name=="SUM"){
-   Sum <- tapply(X.complete,INDEX,sum)
+   Sum <- tapply(X.complete,INDEX,base::sum)
 
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
 		
+		factor1.levels <- NA
 		activation.text.e<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.e))
 		
@@ -273,9 +283,11 @@ for(k in 1:num.factors){
 
 		if(num.factors==2){
 		
+		factor1.levels <- NA
 		activation.text.f<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.f))
 
+		factor2.levels <- NA
 		activation.text.g<-paste0("factor2.levels<-levels(",INDEX.factors[2],")")
 		eval(parse(text=activation.text.g))
 		
@@ -311,8 +323,8 @@ for(k in 1:num.factors){
      return(list(studysideMessage=studysideMessage))
 	}
   probs.vector <- c(0.05,0.1,0.2,0.25,0.3,0.33,0.4,0.5,0.6,0.67,0.7,0.75,0.8,0.9,0.95)
-  Quantile <- tapply(X.complete,INDEX,quantile, probs=probs.vector)
-  N.count <- tapply(X.complete,INDEX,length)
+  Quantile <- tapply(X.complete,INDEX,stats::quantile, probs=probs.vector)
+  N.count <- tapply(X.complete,INDEX,base::length)
 
 
  output<-list(Quantile=Quantile)

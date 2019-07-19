@@ -69,7 +69,7 @@ return(return.message)
 #select complete cases on X and all INDEX factors only
 all.complete<-stats::complete.cases(X)
 
-
+current.factor <- NA
 for(j in 1:num.factors){
 
 activation.text.a<-paste0("current.factor <-",INDEX.factors[j])
@@ -123,6 +123,7 @@ for(k in 1:num.factors){
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
 		
+                factor1.levels <- NA
 		activation.text.e<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.e))
 		
@@ -137,9 +138,11 @@ for(k in 1:num.factors){
 
 		if(num.factors==2){
 		
+                factor1.levels <- NA
 		activation.text.f<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.f))
 
+                factor2.levels <- NA
 		activation.text.g<-paste0("factor2.levels<-levels(",INDEX.factors[2],")")
 		eval(parse(text=activation.text.g))
 		
@@ -177,6 +180,7 @@ for(k in 1:num.factors){
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
 		
+                factor1.levels <- NA
 		activation.text.e<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.e))
 		
@@ -191,9 +195,11 @@ for(k in 1:num.factors){
 
 		if(num.factors==2){
 		
+                factor1.levels <- NA
 		activation.text.f<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.f))
 
+                factor2.levels <- NA
 		activation.text.g<-paste0("factor2.levels<-levels(",INDEX.factors[2],")")
 		eval(parse(text=activation.text.g))
 		
@@ -231,6 +237,7 @@ for(k in 1:num.factors){
    #make output neat if up to two INDEX factors
 		if(num.factors==1){
 		
+                factor1.levels <- NA
 		activation.text.e<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.e))
 		
@@ -245,9 +252,11 @@ for(k in 1:num.factors){
 
 		if(num.factors==2){
 		
+                factor1.levels <- NA
 		activation.text.f<-paste0("factor1.levels<-levels(",INDEX.factors[1],")")
 		eval(parse(text=activation.text.f))
 
+                factor2.levels <- NA
 		activation.text.g<-paste0("factor2.levels<-levels(",INDEX.factors[2],")")
 		eval(parse(text=activation.text.g))
 		
