@@ -151,131 +151,172 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   
   formula2use.glm <- as.formula(paste0(Reduce(paste, deparse(formulatext.glm ))), env = parent.frame()) # here we need the formula as a 'call' object
   
-  mod.glm.ds <- stats::glm(formula2use.glm, family="gaussian", x=TRUE, control=stats::glm.control(maxit=1), contrasts=NULL, data=dataDF)
+  # mod.glm.ds <- stats::glm(formula2use.glm, family="gaussian", x=TRUE, control=stats::glm.control(maxit=1), contrasts=NULL, data=dataDF)
+  mod.glm.ds <- stats::glm(formula2use.glm, family="gaussian", x=TRUE, offset=offset, weights=weights, data=dataDF)
   
-  X.mat <- as.matrix(mod.glm.ds$x)
+  y.vect<-mod.glm.ds$y
+  X.mat<-mod.glm.ds$x
+  pw.vect<-mod.glm.ds$prior.weights
+  offset.vect<-mod.glm.ds$offset
   
-  dimX <- dim((X.mat))
   
-  y.vect <- as.vector(mod.glm.ds$y)
+  ##############################
+  #TEST FOR OVERSATURATED MODEL#
+  ##############################
+  dimX<-dim((X.mat))
   
-  ##############################################################
-  #FIRST TYPE OF DISCLOSURE TRAP - TEST FOR OVERSATURATED MODEL#
-  #TEST AGAINST nfilter.glm									  #
-  ##############################################################
   
-  glm.saturation.invalid <- 0
-  num.p <- dimX[2]
-  num.N <- dimX[1]
+  glm.saturation.invalid<-0
+  num.p<-as.numeric(dimX[2])
+  num.N<-as.numeric(dimX[1])
   
-  if(num.p>nfilter.glm*num.N){
-    glm.saturation.invalid <- 1
-    errorMessage <- "ERROR: Model has too many parameters, there is a possible risk of disclosure - please simplify model"
-    #DELETE return(errorMessage) 
+  if(num.p>(nfilter.glm*num.N)){
+    glm.saturation.invalid<-1
+    errorMessage.gos<-paste0("ERROR: Model is oversaturated (too many model parameters relative to sample size)",
+                             "leading to a possible risk of disclosure - please simplify model. With ",
+                             num.p," parameters and nfilter.glm = ",round(nfilter.glm,4)," you need ",
+                             round((num.p/nfilter.glm),0)," observations")
   }
   
-  coef.names <- names(mod.glm.ds$coefficients)
   
-  if(is.null(weights)){
-    w.vect <- rep(1,length(y.vect))
-  }else{
-    ftext <- paste0("cbind(",weights,")")
-    w.vect <- eval(parse(text=ftext), envir = parent.frame())
-  }
+  #########################
+  #CHECK Y VECTOR VALIDITY#
+  #########################
   
-  ################################
-  #SECOND TYPE OF DISCLOSURE TRAP#
-  ################################
+  y.invalid<-0
   
-  #If y, X or w data are invalid but user has modified clientside
-  #function (ds.glm) to circumvent trap, model will get to this point without
-  #giving a controlled shut down with a warning about invalid data.
-  #So as a safety measure, we will now use the same test that is used to
-  #trigger a controlled trap in the clientside function to destroy the
-  #score.vector and information.matrix in the study with the problem.
+  #Count number of unique non-missing values - disclosure risk only arises with two levels
+  unique.values.noNA.y<-unique(y.vect[stats::complete.cases(y.vect)])
   
-  #CHECK Y VECTOR VALIDITY
-  y.invalid <- 0
-  
-  #COUNT NUMBER OF UNIQUE NON-MISSING VALUES - DISCLOSURE RISK ONLY ARISES WITH TWO LEVELS
-  unique.values.noNA.y <- unique(y.vect[complete.cases(y.vect)])
-  
-  #IF TWO LEVELS, CHECK WHETHER EITHER LEVEL 0 < n < nfilter.tab
-  
+  #If two levels, check whether either level 0 < n < nfilter.tab
   if(length(unique.values.noNA.y)==2){
-    tabvar<-table(y.vect)[table(y.vect)>=1]   #tabvar COUNTS N IN ALL CATEGORIES WITH AT LEAST ONE OBSERVATION
+    tabvar<-table(y.vect)[table(y.vect)>=1]   #tabvar counts n in all categories with at least one observation
     min.category<-min(tabvar)
     if(min.category<nfilter.tab){
       y.invalid<-1
-      errorMessage<-"ERROR: y vector is binary with one category less than filter threshold for table cell size"
+      errorMessage.y<-"ERROR: y (response) vector is binary with one category less than filter threshold for table cell size"
     }
   }
   
-  #CHECK X MATRIX VALIDITY 
-  #Check no dichotomous X vectors with between 1 and filter.threshold 
+  
+  #Check x matrix validity 
+  #Check no dichotomous x vectors with between 1 and filter.threshold 
   #observations at either level 
-  dimX<-dim((X.mat))
   
-  num.Xpar<-dimX[2]
+  Xpar.invalid<-rep(0,num.p)
+  x.invalid<-0 #Any x parameter invalud
   
-  Xpar.invalid<-rep(0,num.Xpar)
-  
-  for(pj in 1:num.Xpar){
-    unique.values.noNA<-unique((X.mat[,pj])[complete.cases(X.mat[,pj])]) 
+  for(pj in 1:num.p){
+    unique.values.noNA<-unique((X.mat[,pj])[stats::complete.cases(X.mat[,pj])]) 
     
     if(length(unique.values.noNA)==2){
-      tabvar<-table(X.mat[,pj])[table(X.mat[,pj])>=1] #tabvar COUNTS N IN ALL CATEGORIES WITH AT LEAST ONE OBSERVATION
+      tabvar<-table(X.mat[,pj])[table(X.mat[,pj])>=1] #tabvar counts n in all categories with at least one observation
       min.category<-min(tabvar)
       if(min.category<nfilter.tab){
         Xpar.invalid[pj]<-1
-        errorMessage<-"ERROR: at least one column in X matrix is binary with one category less than filter threshold for table cell size"
+        x.invalid<-1
+        errorMessage.x<-"ERROR: at least one column in X matrix is binary with one category less than filter threshold for table cell size"
       }
     }
   }
   
   
-  #CHECK W VECTOR VALIDITY
+  
+  
+  #Check w vector validity
   w.invalid<-0
   
-  unique.values.noNA.w<-unique(w.vect[complete.cases(w.vect)])
-  
-  if(length(unique.values.noNA.w)==2){
-    tabvar<-table(w.vect)[table(w.vect)>=1]   #tabvar COUNTS N IN ALL CATEGORIES WITH AT LEAST ONE OBSERVATION
-    min.category<-min(tabvar)
-    if(min.category<nfilter.tab){
-      w.invalid<-1
-      errorMessage<-"ERROR: w vector is binary with one category less than filter threshold for table cell size"
+  if(!is.null(pw.vect))
+  {
+    w.vect<-pw.vect
+    
+    unique.values.noNA.w<-unique(w.vect[stats::complete.cases(w.vect)])
+    
+    if(length(unique.values.noNA.w)==2){
+      tabvar<-table(w.vect)[table(w.vect)>=1]   #tabvar counts n in all categories with at least one observation
+      min.category<-min(tabvar)
+      if(min.category<nfilter.tab){
+        w.invalid<-1
+        errorMessage.w<-"ERROR: weights vector is binary with one category less than filter threshold for table cell size"
+      }
     }
   }
   
-  #Do the glmDS1 checks
+  #Check o vector validity
+  o.invalid<-0
+  
+  if(!is.null(offset.vect))
+  {	
+    #Keep vector name consistent
+    o.vect<-offset.vect
+    
+    unique.values.noNA.o<-unique(o.vect[stats::complete.cases(o.vect)])
+    
+    if(length(unique.values.noNA.o)==2){
+      tabvar<-table(o.vect)[table(o.vect)>=1]   #tabvar counts n in all categories with at least one observation
+      min.category<-min(tabvar)
+      if(min.category<nfilter.tab){
+        o.invalid<-1
+        errorMessage.o<-"ERROR: offset vector is binary with one category less than filter threshold for table cell size"
+      }
+    }
+  }
+  
+  ###############################################
+  #FIT MODEL AFTER CONFIRMING NO DISCLOSURE RISK#
+  ###############################################
   
   disclosure.risk<-0
   
-  if(y.invalid>0||w.invalid>0||sum(Xpar.invalid)>0||glm.saturation.invalid>0){
-    info.matrix<-NA
-    score.vector<-NA
+  if(y.invalid>0||w.invalid>0||o.invalid>0||sum(Xpar.invalid)>0||glm.saturation.invalid>0){
     disclosure.risk<-1
-    mg<-NA
   }
   
-
-  ##################################################################
-
-  if(disclosure.risk==0){
+  if(disclosure.risk==0)
+  {
     mg <- lmer(formula2use, offset=offset, weights=weights, data=dataDF, REML = REML)
     # outlist = list(call=summary(mg)$call, AICtab=summary(mg)$AICtab, coefficients=summary(mg)$coefficients, random.effects=summary(mg)$varcor, cov.scaled = summary(mg)$vcov,
     #                data=dataName, Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing, ngrps = summary(mg)$ngrps,offset=varname.offset, weights=varname.weights, REML=REML
     #                )
-    outlist = list(call=summary(mg)$call, AICtab=summary(mg)$AICtab, REML=mg@devcomp$cmp[7], coefficients=summary(mg)$coefficients, RE=summary(mg)$varcor, data=dataName,
-                   Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing, cov.scaled=summary(mg)$vcov, ngrps = summary(mg)$ngrps,offset=varname.offset, weights=varname.weights,
+    outlist = list(Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing, call=summary(mg)$call, AICtab=summary(mg)$AICtab, REML=mg@devcomp$cmp[7], 
+                   coefficients=summary(mg)$coefficients, RE=summary(mg)$varcor, data=dataName,
+                    cov.scaled=summary(mg)$vcov, ngrps = summary(mg)$ngrps,offset=varname.offset, weights=varname.weights,
                    errorMessage = errorMessage, disclosure.risk = disclosure.risk)
   }
-  else {
-    outlist = list(errorMessage = errorMessage, disclosure.risk = disclosure.risk)
+  else{
+    errorMessage.d1<-"ERROR: Model failed in this source because of an enhanced risk of disclosure"
+    errorMessage.d2<-"The following message(s) identify the cause of this enhanced risk"
+    
+    outlist.1<-list(errorMessage.1=errorMessage.d1)
+    outlist.2<-list(errorMessage.2=errorMessage.d2)
+    
+    outlist.gos<-NULL
+    if(glm.saturation.invalid==1){
+      outlist.gos<-list(errorMessage.gos=errorMessage.gos)		
+    }
+    
+    outlist.y<-NULL
+    if(y.invalid==1){
+      outlist.y<-list(errorMessage.y=errorMessage.y)		
+    }
+    
+    outlist.x<-NULL
+    if(x.invalid==1){
+      outlist.x<-list(errorMessage.x=errorMessage.x)		
+    }
+    
+    outlist.w<-NULL
+    if(w.invalid==1){
+      outlist.w<-list(errorMessage.w=errorMessage.w)		
+    }
+    
+    outlist.o<-NULL
+    if(o.invalid==1){
+      outlist.o<-list(errorMessage.o=errorMessage.o)		
+    }
+    
+    outlist<-list(outlist.1,outlist.2,outlist.gos,outlist.y,outlist.x,outlist.w,outlist.o)
   }
-
-
   return(outlist)
   
 }
