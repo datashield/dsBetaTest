@@ -26,7 +26,6 @@
 #' are then processed and reported by ds.lmerSLMA.o potentially including
 #' random effects meta-analysis using the metafor package if requested
 #' in the call to ds.lmerSLMA.o
-#' @import lme4
 #' @export
 lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   
@@ -261,7 +260,7 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
       }
     }
   }
-  
+
   ###############################################
   #FIT MODEL AFTER CONFIRMING NO DISCLOSURE RISK#
   ###############################################
@@ -274,14 +273,17 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   
   if(disclosure.risk==0)
   {
-    mg <- lmer(formula2use, offset=offset, weights=weights, data=dataDF, REML = REML)
+    mg <- lme4::lmer(formula2use, offset=offset, weights=weights, data=dataDF, REML = REML)
     # outlist = list(call=summary(mg)$call, AICtab=summary(mg)$AICtab, coefficients=summary(mg)$coefficients, random.effects=summary(mg)$varcor, cov.scaled = summary(mg)$vcov,
     #                data=dataName, Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing, ngrps = summary(mg)$ngrps,offset=varname.offset, weights=varname.weights, REML=REML
     #                )
-    outlist = list(Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing, call=summary(mg)$call, AICtab=summary(mg)$AICtab, REML=mg@devcomp$cmp[7], 
-                   coefficients=summary(mg)$coefficients, RE=summary(mg)$varcor, data=dataName,
-                    cov.scaled=summary(mg)$vcov, ngrps = summary(mg)$ngrps,offset=varname.offset, weights=varname.weights,
-                   errorMessage = errorMessage, disclosure.risk = disclosure.risk)
+    #outlist = list(Ntotal=Ntotal, Nvalid=Nvalid, Nmissing=Nmissing, call=summary(mg)$call, AICtab=summary(mg)$AICtab, REML=mg@devcomp$cmp[7], 
+    #               coefficients=summary(mg)$coefficients, RE=summary(mg)$varcor, data=dataName,
+    #                cov.scaled=summary(mg)$vcov, ngrps = summary(mg)$ngrps,offset=varname.offset, weights=varname.weights,
+    #               errorMessage = errorMessage, disclosure.risk = disclosure.risk)
+    summary_mg = summary(mg)
+    summary_mg$residuals <- NULL
+    outlist = list(summary_mg, errorMessage = errorMessage, disclosure.risk = disclosure.risk)
   }
   else{
     errorMessage.d1<-"ERROR: Model failed in this source because of an enhanced risk of disclosure"
@@ -314,8 +316,8 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
     if(o.invalid==1){
       outlist.o<-list(errorMessage.o=errorMessage.o)		
     }
-    
-    outlist<-list(outlist.1,outlist.2,outlist.gos,outlist.y,outlist.x,outlist.w,outlist.o)
+
+    outlist<-list(outlist.1,outlist.2,outlist.gos,outlist.y,outlist.x,outlist.w,outlist.o, disclosure.risk = disclosure.risk)
   }
   return(outlist)
   
