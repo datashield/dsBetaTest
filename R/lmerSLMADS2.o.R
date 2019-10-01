@@ -49,6 +49,11 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
     dataDF <- NULL
   }
   
+  # Put pipes back into formula
+  #formula = as.formula(paste(formula,collapse="|"))
+  # formula <- as.formula(gsub("5428314", "|", formula))
+   formula <- as.formula(formula)
+   
   # Rewrite formula extracting variables nested in strutures like data frame or list
   # (e.g. D$A~D$B will be re-written A~B)
   # Note final product is a list of the variables in the model (yvector and covariates)
