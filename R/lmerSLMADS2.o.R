@@ -51,8 +51,12 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   
   # Put pipes back into formula
   #formula = as.formula(paste(formula,collapse="|"))
-   formula <- as.formula(gsub("5428314", "|", formula, fixed = TRUE))
-  # formula <- as.formula(formula)
+   formula <- Reduce(paste, deparse(formula))
+   formula <- gsub("xxx", "|", formula, fixed = TRUE)
+   formula <- gsub("yyy", "(", formula, fixed = TRUE)
+   formula <- gsub("zzz", ")", formula, fixed = TRUE)
+   formula <- as.formula(formula)
+  
    
   # Rewrite formula extracting variables nested in strutures like data frame or list
   # (e.g. D$A~D$B will be re-written A~B)
