@@ -6,6 +6,7 @@ Maintainer: DataSHIELD Developers <datashield@newcastle.ac.uk>
 Description: Beta versions of new DataSHIELD server functions. Collected in this
     temporary package, prior to inclusion in the main DataSHIELD packages.
 License: GPL-3
+Depends: lme4
 AggregateMethods: meanSdGpDS,
     tTestFDS2,
     lexisDS1.o,

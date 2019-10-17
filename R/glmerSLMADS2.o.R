@@ -2,7 +2,6 @@
 #' @title glmeSLMADS2.o
 #' @description This is the second serverside function called by ds.glmSLMA.o.
 #' @details It is a function
-#' @import lme4
 #' @export
 glmerSLMADS2.o <- function(formula, family, offset, weights, dataName, nAGQ=1){
   
