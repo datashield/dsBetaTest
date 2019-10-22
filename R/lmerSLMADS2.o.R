@@ -80,6 +80,8 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   formulatext <- gsub("~", "|", formulatext, fixed=TRUE)
   formulatext <- gsub("+", "|", formulatext, fixed=TRUE)
   formulatext <- gsub("*", "|", formulatext, fixed=TRUE)
+  formulatext <- gsub("/", "|", formulatext, fixed=TRUE)
+  formulatext <- gsub(":", "|", formulatext, fixed=TRUE)
   formulatext <- gsub("||", "|", formulatext, fixed=TRUE)
   
   
@@ -157,6 +159,8 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   formulatext.glm <- gsub("(0", "", formulatext.glm, fixed=TRUE)
   formulatext.glm <- gsub(")", "", formulatext.glm, fixed=TRUE)
   formulatext.glm <- gsub("|", "+", formulatext.glm, fixed=TRUE)
+  formulatext.glm <- gsub(":", "+", formulatext.glm, fixed=TRUE)
+  formulatext.glm <- gsub("/", "+", formulatext.glm, fixed=TRUE)
   formulatext.glm <- gsub("++", "+", formulatext.glm, fixed=TRUE)
   
   formula2use.glm <- as.formula(paste0(Reduce(paste, deparse(formulatext.glm ))), env = parent.frame()) # here we need the formula as a 'call' object
