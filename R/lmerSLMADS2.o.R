@@ -72,8 +72,8 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   # Convert formula string into separate variable names split by |
   formulatext <- gsub(" ", "", formulatext, fixed=TRUE)
   formulatext <- gsub("(", "", formulatext, fixed=TRUE)
-  formulatext <- gsub("1", "", formulatext, fixed=TRUE)
-  formulatext <- gsub("0", "", formulatext, fixed=TRUE)
+  formulatext <- gsub("(1", "", formulatext, fixed=TRUE)
+  formulatext <- gsub("(0", "", formulatext, fixed=TRUE)
   formulatext <- gsub(")", "", formulatext, fixed=TRUE)
   formulatext <- gsub("~", "|", formulatext, fixed=TRUE)
   formulatext <- gsub("+", "|", formulatext, fixed=TRUE)
@@ -151,8 +151,8 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   # Convert formula string into formula string that will work for GLM
   formulatext.glm <- gsub(" ", "", formulatext.glm, fixed=TRUE)
   formulatext.glm <- gsub("(", "", formulatext.glm, fixed=TRUE)
-  formulatext.glm <- gsub("1", "", formulatext.glm, fixed=TRUE)
-  formulatext.glm <- gsub("0", "", formulatext.glm, fixed=TRUE)
+  formulatext.glm <- gsub("(1", "", formulatext.glm, fixed=TRUE)
+  formulatext.glm <- gsub("(0", "", formulatext.glm, fixed=TRUE)
   formulatext.glm <- gsub(")", "", formulatext.glm, fixed=TRUE)
   formulatext.glm <- gsub("|", "+", formulatext.glm, fixed=TRUE)
   formulatext.glm <- gsub("++", "+", formulatext.glm, fixed=TRUE)
@@ -161,7 +161,7 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
   
   # mod.glm.ds <- stats::glm(formula2use.glm, family="gaussian", x=TRUE, control=stats::glm.control(maxit=1), contrasts=NULL, data=dataDF)
   mod.glm.ds <- stats::glm(formula2use.glm, family="gaussian", x=TRUE, offset=offset, weights=weights, data=dataDF)
-  
+
   y.vect<-mod.glm.ds$y
   X.mat<-mod.glm.ds$x
   pw.vect<-mod.glm.ds$prior.weights
