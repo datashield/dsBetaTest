@@ -55,6 +55,8 @@ lmerSLMADS2.o <- function(formula, offset, weights, dataName, REML = TRUE){
    formula <- gsub("xxx", "|", formula, fixed = TRUE)
    formula <- gsub("yyy", "(", formula, fixed = TRUE)
    formula <- gsub("zzz", ")", formula, fixed = TRUE)
+   formula <- gsub("ppp", "/", formula, fixed = TRUE)
+   formula <- gsub("qqq", ":", formula, fixed = TRUE)
    formula <- as.formula(formula)
   
    
