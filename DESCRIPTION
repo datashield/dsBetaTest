@@ -10,9 +10,11 @@ Depends: R (>= 3.4.0)
 Imports:
     nlme,
     RANN,
+    pROC,
     dsBase
 AggregateMethods:
     rilmDS.b,
+    rocDS,
     tTestFDS2
 AssignMethods:
     dataFrameFillDS
